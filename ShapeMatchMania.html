@@ -1,1184 +1,1181 @@
-<!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width"><title>https://caisual.com/games/hveb0xc07xed92zu/index.html?unique_id=hveb0xc07xed92zu&amp;roomId=&amp;id=&amp;userId=m0use</title><link rel="stylesheet" type="text/css" href="resource://content-accessible/viewsource.css"></head><body id="viewsource" style="tab-size: 4"><pre id="line1"><span></span><span class="error" title="Start tag seen without seeing a doctype first. Expected “&lt;!DOCTYPE html&gt;”.">&lt;<span class="start-tag">html</span> <span class="attribute-name">lang</span>="<a class="attribute-value">en</a>"&gt;</span><span>
-<span id="line2"></span></span><span>&lt;<span class="start-tag">head</span>&gt;</span><span>
-<span id="line3"></span>    </span><span>&lt;<span class="start-tag">meta</span> <span class="attribute-name">charset</span>="<a class="attribute-value">UTF-8</a>"&gt;</span><span>
-<span id="line4"></span>    </span><span>&lt;<span class="start-tag">meta</span> <span class="attribute-name">name</span>="<a class="attribute-value">viewport</a>" <span class="attribute-name">content</span>="<a class="attribute-value">width=device-width, initial-scale=1.0</a>"&gt;</span><span>
-<span id="line5"></span>    </span><span>&lt;<span class="start-tag">title</span>&gt;</span><span>Shape Match Mania</span><span>&lt;/<span class="end-tag">title</span>&gt;</span><span>
-<span id="line6"></span>    </span><span>&lt;<span class="start-tag">meta</span> <span class="attribute-name">name</span>="<a class="attribute-value">description</a>" <span class="attribute-name">content</span>="<a class="attribute-value">Match shapes and colors in this addictive puzzle game. Combine similar shapes or colors for points, match both for bonus points!</a>"&gt;</span><span>
-<span id="line7"></span>    </span><span>&lt;<span class="start-tag">style</span>&gt;</span><span>
-<span id="line8"></span>        * {
-<span id="line9"></span>            margin: 0;
-<span id="line10"></span>            padding: 0;
-<span id="line11"></span>            box-sizing: border-box;
-<span id="line12"></span>        }
-<span id="line13"></span>
-<span id="line14"></span>        @keyframes float {
-<span id="line15"></span>            0%, 100% { transform: translateY(0); }
-<span id="line16"></span>            50% { transform: translateY(-20px); }
-<span id="line17"></span>        }
-<span id="line18"></span>
-<span id="line19"></span>        @keyframes wave {
-<span id="line20"></span>            0% { transform: translateX(-100%); }
-<span id="line21"></span>            100% { transform: translateX(100%); }
-<span id="line22"></span>        }
-<span id="line23"></span>
-<span id="line24"></span>        .background-effect {
-<span id="line25"></span>            position: fixed;
-<span id="line26"></span>            top: 0;
-<span id="line27"></span>            left: 0;
-<span id="line28"></span>            width: 100%;
-<span id="line29"></span>            height: 100%;
-<span id="line30"></span>            pointer-events: none;
-<span id="line31"></span>            z-index: -1;
-<span id="line32"></span>            overflow: hidden;
-<span id="line33"></span>        }
-<span id="line34"></span>
-<span id="line35"></span>        .particle {
-<span id="line36"></span>            position: absolute;
-<span id="line37"></span>            width: 4px;
-<span id="line38"></span>            height: 4px;
-<span id="line39"></span>            background: rgba(255, 255, 255, 0.1);
-<span id="line40"></span>            border-radius: 50%;
-<span id="line41"></span>            animation: float 3s infinite;
-<span id="line42"></span>        }
-<span id="line43"></span>
-<span id="line44"></span>        .wave {
-<span id="line45"></span>            position: absolute;
-<span id="line46"></span>            height: 2px;
-<span id="line47"></span>            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-<span id="line48"></span>            width: 200%;
-<span id="line49"></span>            animation: wave 8s linear infinite;
-<span id="line50"></span>        }
-<span id="line51"></span>
-<span id="line52"></span>        body {
-<span id="line53"></span>            display: flex;
-<span id="line54"></span>            flex-direction: column;
-<span id="line55"></span>            align-items: center;
-<span id="line56"></span>            justify-content: center;
-<span id="line57"></span>            min-height: 100vh;
-<span id="line58"></span>            background: #1a1a2e;
-<span id="line59"></span>            font-family: Arial, sans-serif;
-<span id="line60"></span>            touch-action: none;
-<span id="line61"></span>            overflow: hidden;
-<span id="line62"></span>        }
-<span id="line63"></span>
-<span id="line64"></span>        .progress-container {
-<span id="line65"></span>            width: 100%;
-<span id="line66"></span>            max-width: 352px;
-<span id="line67"></span>            height: 4px;
-<span id="line68"></span>            background: rgba(255, 255, 255, 0.1);
-<span id="line69"></span>            border-radius: 2px;
-<span id="line70"></span>            margin-bottom: 10px;
-<span id="line71"></span>        }
-<span id="line72"></span>
-<span id="line73"></span>        .progress-bar {
-<span id="line74"></span>            height: 100%;
-<span id="line75"></span>            background: #4fd1c5;
-<span id="line76"></span>            border-radius: 2px;
-<span id="line77"></span>            transition: width 0.3s ease;
-<span id="line78"></span>        }
-<span id="line79"></span>
-<span id="line80"></span>        #gameContainer {
-<span id="line81"></span>            display: none;
-<span id="line82"></span>        }
-<span id="line83"></span>
-<span id="line84"></span>        #startMenu {
-<span id="line85"></span>            background: rgba(255, 255, 255, 0.1);
-<span id="line86"></span>            padding: 20px;
-<span id="line87"></span>            border-radius: 10px;
-<span id="line88"></span>            text-align: center;
-<span id="line89"></span>            color: white;
-<span id="line90"></span>        }
-<span id="line91"></span>
-<span id="line92"></span>        #startMenu h1 {
-<span id="line93"></span>            margin-bottom: 20px;
-<span id="line94"></span>            color: #4fd1c5;
-<span id="line95"></span>        }
-<span id="line96"></span>
-<span id="line97"></span>        #startMenu p {
-<span id="line98"></span>            margin-bottom: 15px;
-<span id="line99"></span>            line-height: 1.5;
-<span id="line100"></span>        }
-<span id="line101"></span>
-<span id="line102"></span>        #readyBtn {
-<span id="line103"></span>            background: #4fd1c5;
-<span id="line104"></span>            border: none;
-<span id="line105"></span>            padding: 10px 20px;
-<span id="line106"></span>            border-radius: 5px;
-<span id="line107"></span>            color: white;
-<span id="line108"></span>            cursor: pointer;
-<span id="line109"></span>            font-size: 16px;
-<span id="line110"></span>            transition: background 0.3s;
-<span id="line111"></span>        }
-<span id="line112"></span>
-<span id="line113"></span>        #readyBtn:hover {
-<span id="line114"></span>            background: #38b2ac;
-<span id="line115"></span>        }
-<span id="line116"></span>
-<span id="line117"></span>        #score {
-<span id="line118"></span>            color: white;
-<span id="line119"></span>            font-size: 24px;
-<span id="line120"></span>            margin: 20px 0;
-<span id="line121"></span>        }
-<span id="line122"></span>
-<span id="line123"></span>        #powerupButton {
-<span id="line124"></span>            background: #4fd1c5;
-<span id="line125"></span>            border: none;
-<span id="line126"></span>            padding: 10px 20px;
-<span id="line127"></span>            border-radius: 5px;
-<span id="line128"></span>            color: white;
-<span id="line129"></span>            cursor: pointer;
-<span id="line130"></span>            font-size: 16px;
-<span id="line131"></span>            transition: background 0.3s;
-<span id="line132"></span>            margin: 10px 0;
-<span id="line133"></span>        }
-<span id="line134"></span>
-<span id="line135"></span>        #powerupButton:disabled {
-<span id="line136"></span>            background: #2d7c76;
-<span id="line137"></span>            cursor: not-allowed;
-<span id="line138"></span>            opacity: 0.7;
-<span id="line139"></span>        }
-<span id="line140"></span>
-<span id="line141"></span>        #powerupDock {
-<span id="line142"></span>            display: flex;
-<span id="line143"></span>            gap: 10px;
-<span id="line144"></span>            padding: 15px;
-<span id="line145"></span>            background: rgba(255, 255, 255, 0.1);
-<span id="line146"></span>            border-radius: 8px;
-<span id="line147"></span>            margin-top: 15px;
-<span id="line148"></span>            min-height: 70px;
-<span id="line149"></span>            align-items: center;
-<span id="line150"></span>        }
-<span id="line151"></span>
-<span id="line152"></span>        .powerup-item {
-<span id="line153"></span>            width: 50px;
-<span id="line154"></span>            height: 50px;
-<span id="line155"></span>            background: rgba(255, 255, 255, 0.2);
-<span id="line156"></span>            border-radius: 8px;
-<span id="line157"></span>            cursor: pointer;
-<span id="line158"></span>            display: flex;
-<span id="line159"></span>            align-items: center;
-<span id="line160"></span>            justify-content: center;
-<span id="line161"></span>            transition: transform 0.2s;
-<span id="line162"></span>            position: relative;
-<span id="line163"></span>        }
-<span id="line164"></span>
-<span id="line165"></span>        .powerup-item:hover {
-<span id="line166"></span>            transform: scale(1.1);
-<span id="line167"></span>        }
-<span id="line168"></span>
-<span id="line169"></span>        .powerup-tooltip {
-<span id="line170"></span>            position: absolute;
-<span id="line171"></span>            bottom: 100%;
-<span id="line172"></span>            left: 50%;
-<span id="line173"></span>            transform: translateX(-50%);
-<span id="line174"></span>            background: rgba(0, 0, 0, 0.8);
-<span id="line175"></span>            color: white;
-<span id="line176"></span>            padding: 5px 10px;
-<span id="line177"></span>            border-radius: 4px;
-<span id="line178"></span>            font-size: 12px;
-<span id="line179"></span>            white-space: nowrap;
-<span id="line180"></span>            display: none;
-<span id="line181"></span>        }
-<span id="line182"></span>
-<span id="line183"></span>        .powerup-item:hover .powerup-tooltip {
-<span id="line184"></span>            display: block;
-<span id="line185"></span>        }
-<span id="line186"></span>
-<span id="line187"></span>        #grid {
-<span id="line188"></span>            display: grid;
-<span id="line189"></span>            grid-template-columns: repeat(8, 1fr);
-<span id="line190"></span>            gap: 4px;
-<span id="line191"></span>            background: rgba(255, 255, 255, 0.15);
-<span id="line192"></span>            padding: 12px;
-<span id="line193"></span>            border-radius: 12px;
-<span id="line194"></span>            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-<span id="line195"></span>        }
-<span id="line196"></span>
-<span id="line197"></span>        .cell {
-<span id="line198"></span>            width: 40px;
-<span id="line199"></span>            height: 40px;
-<span id="line200"></span>            border-radius: 8px;
-<span id="line201"></span>            cursor: pointer;
-<span id="line202"></span>            transition: transform 0.3s;
-<span id="line203"></span>            background: rgba(255, 255, 255, 0.1);
-<span id="line204"></span>            border: 2px solid rgba(255, 255, 255, 0.2);
-<span id="line205"></span>            display: flex;
-<span id="line206"></span>            align-items: center;
-<span id="line207"></span>            justify-content: center;
-<span id="line208"></span>            position: relative;
-<span id="line209"></span>        }
-<span id="line210"></span>
-<span id="line211"></span>        .cell:hover {
-<span id="line212"></span>            transform: scale(1.1);
-<span id="line213"></span>            background: rgba(255, 255, 255, 0.15);
-<span id="line214"></span>        }
-<span id="line215"></span>
-<span id="line216"></span>        .selected {
-<span id="line217"></span>            transform: scale(1.2);
-<span id="line218"></span>            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
-<span id="line219"></span>            background: rgba(255, 255, 255, 0.2);
-<span id="line220"></span>            border-color: rgba(255, 255, 255, 0.4);
-<span id="line221"></span>        }
-<span id="line222"></span>
-<span id="line223"></span>        @keyframes swapLeft {
-<span id="line224"></span>            0% { transform: translateX(0); }
-<span id="line225"></span>            100% { transform: translateX(-44px); }
-<span id="line226"></span>        }
-<span id="line227"></span>
-<span id="line228"></span>        @keyframes swapRight {
-<span id="line229"></span>            0% { transform: translateX(0); }
-<span id="line230"></span>            100% { transform: translateX(44px); }
-<span id="line231"></span>        }
-<span id="line232"></span>
-<span id="line233"></span>        @keyframes swapUp {
-<span id="line234"></span>            0% { transform: translateY(0); }
-<span id="line235"></span>            100% { transform: translateY(-44px); }
-<span id="line236"></span>        }
-<span id="line237"></span>
-<span id="line238"></span>        @keyframes swapDown {
-<span id="line239"></span>            0% { transform: translateY(0); }
-<span id="line240"></span>            100% { transform: translateY(44px); }
-<span id="line241"></span>        }
-<span id="line242"></span>
-<span id="line243"></span>        @keyframes dropIn {
-<span id="line244"></span>            0% { 
-<span id="line245"></span>                transform: translateY(-500px);
-<span id="line246"></span>                opacity: 0;
-<span id="line247"></span>            }
-<span id="line248"></span>            60% {
-<span id="line249"></span>                transform: translateY(20px);
-<span id="line250"></span>            }
-<span id="line251"></span>            100% { 
-<span id="line252"></span>                transform: translateY(0);
-<span id="line253"></span>                opacity: 1;
-<span id="line254"></span>            }
-<span id="line255"></span>        }
-<span id="line256"></span>
-<span id="line257"></span>        @keyframes explode {
-<span id="line258"></span>            0% { 
-<span id="line259"></span>                transform: scale(1) rotate(0deg);
-<span id="line260"></span>                opacity: 1;
-<span id="line261"></span>            }
-<span id="line262"></span>            50% {
-<span id="line263"></span>                transform: scale(1.5) rotate(180deg);
-<span id="line264"></span>                opacity: 0.5;
-<span id="line265"></span>            }
-<span id="line266"></span>            100% { 
-<span id="line267"></span>                transform: scale(2) rotate(360deg);
-<span id="line268"></span>                opacity: 0;
-<span id="line269"></span>            }
-<span id="line270"></span>        }
-<span id="line271"></span>
-<span id="line272"></span>        @keyframes colorBurst {
-<span id="line273"></span>            0% { filter: brightness(1); transform: scale(1); }
-<span id="line274"></span>            50% { filter: brightness(1.5); transform: scale(1.2); }
-<span id="line275"></span>            100% { filter: brightness(1); transform: scale(1); }
-<span id="line276"></span>        }
-<span id="line277"></span>
-<span id="line278"></span>        @keyframes shapeBurst {
-<span id="line279"></span>            0% { transform: rotate(0deg) scale(1); }
-<span id="line280"></span>            50% { transform: rotate(180deg) scale(1.2); }
-<span id="line281"></span>            100% { transform: rotate(360deg) scale(1); }
-<span id="line282"></span>        }
-<span id="line283"></span>
-<span id="line284"></span>        @keyframes rainbowPulse {
-<span id="line285"></span>            0% { filter: hue-rotate(0deg); }
-<span id="line286"></span>            100% { filter: hue-rotate(360deg); }
-<span id="line287"></span>        }
-<span id="line288"></span>
-<span id="line289"></span>        @keyframes shuffle {
-<span id="line290"></span>            0% { transform: rotate(0deg); }
-<span id="line291"></span>            25% { transform: rotate(-30deg); }
-<span id="line292"></span>            75% { transform: rotate(30deg); }
-<span id="line293"></span>            100% { transform: rotate(0deg); }
-<span id="line294"></span>        }
-<span id="line295"></span>
-<span id="line296"></span>        .level-up-message {
-<span id="line297"></span>            position: fixed;
-<span id="line298"></span>            top: 50%;
-<span id="line299"></span>            left: 50%;
-<span id="line300"></span>            transform: translate(-50%, -50%);
-<span id="line301"></span>            background: rgba(0, 0, 0, 0.8);
-<span id="line302"></span>            color: white;
-<span id="line303"></span>            padding: 20px 40px;
-<span id="line304"></span>            border-radius: 10px;
-<span id="line305"></span>            font-size: 24px;
-<span id="line306"></span>            z-index: 1000;
-<span id="line307"></span>            animation: fadeInOut 2s ease-in-out;
-<span id="line308"></span>        }
-<span id="line309"></span>
-<span id="line310"></span>        @keyframes fadeInOut {
-<span id="line311"></span>            0%, 100% { opacity: 0; }
-<span id="line312"></span>            50% { opacity: 1; }
-<span id="line313"></span>        }
-<span id="line314"></span>
-<span id="line315"></span>        .swap-left { animation: swapLeft 0.3s ease-in-out; }
-<span id="line316"></span>        .swap-right { animation: swapRight 0.3s ease-in-out; }
-<span id="line317"></span>        .swap-up { animation: swapUp 0.3s ease-in-out; }
-<span id="line318"></span>        .swap-down { animation: swapDown 0.3s ease-in-out; }
-<span id="line319"></span>        .drop-in { animation: dropIn 0.5s ease-out; }
-<span id="line320"></span>
-<span id="line321"></span>        @media (max-width: 600px) {
-<span id="line322"></span>            .cell {
-<span id="line323"></span>                width: 35px;
-<span id="line324"></span>                height: 35px;
-<span id="line325"></span>            }
-<span id="line326"></span>        }
-<span id="line327"></span>    </span><span>&lt;/<span class="end-tag">style</span>&gt;</span><span>
-<span id="line328"></span></span><span>&lt;/<span class="end-tag">head</span>&gt;</span><span>
-<span id="line329"></span></span><span>&lt;<span class="start-tag">body</span>&gt;</span><span>
-<span id="line330"></span>    </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">startMenu</a>"&gt;</span><span>
-<span id="line331"></span>        </span><span>&lt;<span class="start-tag">h1</span>&gt;</span><span>Shape Match Mania</span><span>&lt;/<span class="end-tag">h1</span>&gt;</span><span>
-<span id="line332"></span>        </span><span>&lt;<span class="start-tag">p</span>&gt;</span><span>Welcome to an addictive puzzle adventure!</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line333"></span>           Match 3+ pieces to score points:</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line334"></span>           🎨 Same color: +1 point each</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line335"></span>           ⭐ Same shape: +1 point each</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line336"></span>           ✨ Both match: +2 points each!</span><span>&lt;/<span class="end-tag">p</span>&gt;</span><span>
-<span id="line337"></span>        </span><span>&lt;<span class="start-tag">p</span>&gt;</span><span>🎮 How to play:</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line338"></span>           • Swap adjacent pieces by clicking/tapping</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line339"></span>           • Buy powerups at 100 points - some activate instantly!</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line340"></span>           • Chain matches in any direction for bonus points</span><span>&lt;<span class="start-tag">br</span>&gt;</span><span>
-<span id="line341"></span>           • Reach 500 points to level up!</span><span>&lt;/<span class="end-tag">p</span>&gt;</span><span>
-<span id="line342"></span>        </span><span>&lt;<span class="start-tag">button</span> <span class="attribute-name">id</span>="<a class="attribute-value">readyBtn</a>"&gt;</span><span>Ready to Play!</span><span>&lt;/<span class="end-tag">button</span>&gt;</span><span>
-<span id="line343"></span>    </span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line344"></span>
-<span id="line345"></span>    </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">gameContainer</a>"&gt;</span><span>
-<span id="line346"></span>        </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">class</span>="<a class="attribute-value">progress-container</a>"&gt;</span><span>
-<span id="line347"></span>            </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">class</span>="<a class="attribute-value">progress-bar</a>" <span class="attribute-name">style</span>="<a class="attribute-value">width: 0%</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line348"></span>        </span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line349"></span>        </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">style</span>="<a class="attribute-value">display: flex; width: 100%; max-width: 352px; justify-content: space-between; align-items: center; margin-bottom: 10px;</a>"&gt;</span><span>
-<span id="line350"></span>            </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">score</a>"&gt;</span><span>Score: 0</span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line351"></span>            </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">style</span>="<a class="attribute-value">display: flex; gap: 10px;</a>"&gt;</span><span>
-<span id="line352"></span>                </span><span>&lt;<span class="start-tag">button</span> <span class="attribute-name">id</span>="<a class="attribute-value">powerupButton</a>" <span class="attribute-name">disabled</span>&gt;</span><span>? Powerup</span><span>&lt;/<span class="end-tag">button</span>&gt;</span><span>
-<span id="line353"></span>                </span><span>&lt;<span class="start-tag">button</span> <span class="attribute-name">id</span>="<a class="attribute-value">powerupInfoBtn</a>" <span class="attribute-name">style</span>="<a class="attribute-value">background: #4fd1c5; border: none; padding: 10px 20px; border-radius: 5px; color: white; cursor: pointer; font-size: 16px; transition: background 0.3s;</a>"&gt;</span><span>ℹ️ Info</span><span>&lt;/<span class="end-tag">button</span>&gt;</span><span>
-<span id="line354"></span>            </span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line355"></span>        </span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line356"></span>        </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">powerupInfoModal</a>" <span class="attribute-name">style</span>="<a class="attribute-value">display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.95); padding: 20px; border-radius: 10px; color: white; z-index: 1000; max-width: 90%; max-height: 90%; overflow-y: auto;</a>"&gt;</span><span>
-<span id="line357"></span>            </span><span>&lt;<span class="start-tag">h2</span> <span class="attribute-name">style</span>="<a class="attribute-value">color: #4fd1c5; margin-bottom: 15px;</a>"&gt;</span><span>Available Powerups</span><span>&lt;/<span class="end-tag">h2</span>&gt;</span><span>
-<span id="line358"></span>            </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">powerupsList</a>" <span class="attribute-name">style</span>="<a class="attribute-value">display: grid; gap: 10px;</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line359"></span>            </span><span>&lt;<span class="start-tag">button</span> <span class="attribute-name">onclick</span>="<a class="attribute-value">document.getElementById('powerupInfoModal').style.display='none'</a>" <span class="attribute-name">style</span>="<a class="attribute-value">background: #4fd1c5; border: none; padding: 8px 16px; border-radius: 5px; color: white; margin-top: 15px; cursor: pointer;</a>"&gt;</span><span>Close</span><span>&lt;/<span class="end-tag">button</span>&gt;</span><span>
-<span id="line360"></span>        </span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line361"></span>        </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">grid</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line362"></span>        </span><span>&lt;<span class="start-tag">div</span> <span class="attribute-name">id</span>="<a class="attribute-value">powerupDock</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line363"></span>    </span><span>&lt;/<span class="end-tag">div</span>&gt;</span><span>
-<span id="line364"></span>
-<span id="line365"></span>    </span><span>&lt;<span class="start-tag">script</span>&gt;</span><span>
-<span id="line366"></span>        const shapes = ['circle', 'square', 'triangle', 'diamond', 'star', 'hexagon', 'pentagon', 'octagon'];
-<span id="line367"></span>        const colors = ['#FF0000', '#FFA500', '#FFD700', '#008000', '#0000FF', '#DDA0DD', '#8A2BE2', '#FFFFFF'];
-<span id="line368"></span>        let score = 0;
-<span id="line369"></span>        let selectedCell = null;
-<span id="line370"></span>        let gameBoard = [];
-<span id="line371"></span>        let GRID_SIZE = 8;
-<span id="line372"></span>        let currentLevel = 1;
-<span id="line373"></span>        let powerups = [];
-<span id="line374"></span>        let activePowerup = null;
-<span id="line375"></span>        let frozenState = false;
-<span id="line376"></span>        let goldRushMoves = 0;
-<span id="line377"></span>        let moveCounter = 0;
-<span id="line378"></span>        let chainModeActive = false;
-<span id="line379"></span>        let chainMovesLeft = 0;
-<span id="line380"></span>
-<span id="line381"></span>        const POWERUP_TYPES = [
-<span id="line382"></span>            {
-<span id="line383"></span>                name: 'Bomb',
-<span id="line384"></span>                description: 'Removes a 3x3 grid of blocks',
-<span id="line385"></span>                action: (row, col) =&gt; {
-<span id="line386"></span>                    for(let i = -1; i </span><span>&lt;=</span><span> 1; i++) {
-<span id="line387"></span>                        for(let j = -1; j </span><span>&lt;=</span><span> 1; j++) {
-<span id="line388"></span>                            const newRow = row + i;
-<span id="line389"></span>                            const newCol = col + j;
-<span id="line390"></span>                            if(newRow &gt;= 0 &amp;&amp; newRow </span><span>&lt; </span><span>GRID_SIZE &amp;&amp; newCol &gt;= 0 &amp;&amp; newCol </span><span>&lt; </span><span>GRID_SIZE) {
-<span id="line391"></span>                                const cell = document.querySelector(`[data-row="${newRow}"][data-col="${newCol}"]`);
-<span id="line392"></span>                                cell.style.animation = `explode 0.5s ease-out ${(Math.abs(i) + Math.abs(j)) * 0.1}s`;
-<span id="line393"></span>                                setTimeout(() =&gt; replaceBlock(newRow, newCol), 500);
-<span id="line394"></span>                            }
-<span id="line395"></span>                        }
-<span id="line396"></span>                    }
-<span id="line397"></span>                    return true;
-<span id="line398"></span>                }
-<span id="line399"></span>            },
-<span id="line400"></span>            {
-<span id="line401"></span>                name: 'Line Clear',
-<span id="line402"></span>                description: 'Clears entire row and column',
-<span id="line403"></span>                action: (row, col) =&gt; {
-<span id="line404"></span>                    for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line405"></span>                        replaceBlock(row, i);
-<span id="line406"></span>                        replaceBlock(i, col);
-<span id="line407"></span>                    }
-<span id="line408"></span>                    return true;
-<span id="line409"></span>                }
-<span id="line410"></span>            },
-<span id="line411"></span>            {
-<span id="line412"></span>                name: 'Color Bomb',
-<span id="line413"></span>                description: 'Removes all blocks of the clicked color',
-<span id="line414"></span>                action: (row, col) =&gt; {
-<span id="line415"></span>                    const targetColor = gameBoard[row][col].color;
-<span id="line416"></span>                    for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line417"></span>                        for(let j = 0; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line418"></span>                            if(gameBoard[i][j].color === targetColor) {
-<span id="line419"></span>                                const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-<span id="line420"></span>                                cell.style.animation = `colorBurst 0.5s ease-out ${(i + j) * 0.05}s`;
-<span id="line421"></span>                                setTimeout(() =&gt; replaceBlock(i, j), 500);
-<span id="line422"></span>                            }
-<span id="line423"></span>                        }
-<span id="line424"></span>                    }
-<span id="line425"></span>                    return true;
-<span id="line426"></span>                }
-<span id="line427"></span>            },
-<span id="line428"></span>            {
-<span id="line429"></span>                name: 'Shape Bomb',
-<span id="line430"></span>                description: 'Removes all blocks of the clicked shape',
-<span id="line431"></span>                action: (row, col) =&gt; {
-<span id="line432"></span>                    const targetShape = gameBoard[row][col].shape;
-<span id="line433"></span>                    for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line434"></span>                        for(let j = 0; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line435"></span>                            if(gameBoard[i][j].shape === targetShape) {
-<span id="line436"></span>                                const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
-<span id="line437"></span>                                cell.style.animation = `shapeBurst 0.5s ease-out ${(i + j) * 0.05}s`;
-<span id="line438"></span>                                setTimeout(() =&gt; replaceBlock(i, j), 500);
-<span id="line439"></span>                            }
-<span id="line440"></span>                        }
-<span id="line441"></span>                    }
-<span id="line442"></span>                    return true;
-<span id="line443"></span>                }
-<span id="line444"></span>            },
-<span id="line445"></span>            {
-<span id="line446"></span>                name: 'Points Boost',
-<span id="line447"></span>                description: '+100 points instantly!',
-<span id="line448"></span>                action: () =&gt; {
-<span id="line449"></span>                    updateScore(score + 100);
-<span id="line450"></span>                    return true;
-<span id="line451"></span>                }
-<span id="line452"></span>            },
-<span id="line453"></span>            {
-<span id="line454"></span>                name: 'Rainbow',
-<span id="line455"></span>                description: 'Changes all pieces to random colors!',
-<span id="line456"></span>                action: () =&gt; {
-<span id="line457"></span>                    const cells = document.querySelectorAll('.cell');
-<span id="line458"></span>                    cells.forEach(cell =&gt; {
-<span id="line459"></span>                        cell.style.animation = 'rainbowPulse 1s linear';
-<span id="line460"></span>                    });
-<span id="line461"></span>                    setTimeout(() =&gt; {
-<span id="line462"></span>                        for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line463"></span>                            for(let j = 0; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line464"></span>                                gameBoard[i][j].color = colors[Math.floor(Math.random() * colors.length)];
-<span id="line465"></span>                            }
-<span id="line466"></span>                        }
-<span id="line467"></span>                        updateBoard();
-<span id="line468"></span>                        cells.forEach(cell =&gt; {
-<span id="line469"></span>                            cell.style.animation = '';
-<span id="line470"></span>                        });
-<span id="line471"></span>                    }, 1000);
-<span id="line472"></span>                    return true;
-<span id="line473"></span>                }
-<span id="line474"></span>            },
-<span id="line475"></span>            {
-<span id="line476"></span>                name: 'Shuffle',
-<span id="line477"></span>                description: 'Randomly rearranges all pieces!',
-<span id="line478"></span>                action: () =&gt; {
-<span id="line479"></span>                    const cells = document.querySelectorAll('.cell');
-<span id="line480"></span>                    cells.forEach(cell =&gt; {
-<span id="line481"></span>                        cell.style.animation = 'shuffle 0.5s ease-in-out';
-<span id="line482"></span>                    });
-<span id="line483"></span>                    setTimeout(() =&gt; {
-<span id="line484"></span>                        for(let i = GRID_SIZE-1; i &gt; 0; i--) {
-<span id="line485"></span>                            for(let j = GRID_SIZE-1; j &gt; 0; j--) {
-<span id="line486"></span>                                const randI = Math.floor(Math.random() * (i + 1));
-<span id="line487"></span>                                const randJ = Math.floor(Math.random() * (j + 1));
-<span id="line488"></span>                                const temp = gameBoard[i][j];
-<span id="line489"></span>                                gameBoard[i][j] = gameBoard[randI][randJ];
-<span id="line490"></span>                                gameBoard[randI][randJ] = temp;
-<span id="line491"></span>                            }
-<span id="line492"></span>                        }
-<span id="line493"></span>                        updateBoard();
-<span id="line494"></span>                        cells.forEach(cell =&gt; {
-<span id="line495"></span>                            cell.style.animation = '';
-<span id="line496"></span>                        });
-<span id="line497"></span>                    }, 500);
-<span id="line498"></span>                    return true;
-<span id="line499"></span>                }
-<span id="line500"></span>            },
-<span id="line501"></span>            {
-<span id="line502"></span>                name: 'Wild Card',
-<span id="line503"></span>                description: 'Next piece clicked matches everything!',
-<span id="line504"></span>                action: (row, col) =&gt; {
-<span id="line505"></span>                    const clickedPiece = gameBoard[row][col];
-<span id="line506"></span>                    for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line507"></span>                        for(let j = 0; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line508"></span>                            if(i !== row || j !== col) {
-<span id="line509"></span>                                gameBoard[i][j].shape = clickedPiece.shape;
-<span id="line510"></span>                                gameBoard[i][j].color = clickedPiece.color;
-<span id="line511"></span>                            }
-<span id="line512"></span>                        }
-<span id="line513"></span>                    }
-<span id="line514"></span>                    updateBoard();
-<span id="line515"></span>                    return true;
-<span id="line516"></span>                }
-<span id="line517"></span>            },
-<span id="line518"></span>            {
-<span id="line519"></span>                name: 'Time Freeze',
-<span id="line520"></span>                description: 'Stops new pieces for next 3 moves',
-<span id="line521"></span>                action: () =&gt; {
-<span id="line522"></span>                    frozenState = true;
-<span id="line523"></span>                    moveCounter = 3;
-<span id="line524"></span>                    const cells = document.querySelectorAll('.cell');
-<span id="line525"></span>                    cells.forEach(cell =&gt; {
-<span id="line526"></span>                        cell.style.animation = 'colorBurst 0.5s ease-out';
-<span id="line527"></span>                        cell.style.filter = 'brightness(0.7) saturate(1.5)';
-<span id="line528"></span>                    });
-<span id="line529"></span>                    setTimeout(() =&gt; {
-<span id="line530"></span>                        cells.forEach(cell =&gt; {
-<span id="line531"></span>                            cell.style.animation = '';
-<span id="line532"></span>                        });
-<span id="line533"></span>                    }, 500);
-<span id="line534"></span>                    return true;
-<span id="line535"></span>                }
-<span id="line536"></span>            },
-<span id="line537"></span>            {
-<span id="line538"></span>                name: 'Gold Rush',
-<span id="line539"></span>                description: 'All matches give double points for next 3 moves',
-<span id="line540"></span>                action: () =&gt; {
-<span id="line541"></span>                    goldRushMoves = 3;
-<span id="line542"></span>                    const cells = document.querySelectorAll('.cell');
-<span id="line543"></span>                    cells.forEach(cell =&gt; {
-<span id="line544"></span>                        cell.style.animation = 'rainbowPulse 1s linear';
-<span id="line545"></span>                        cell.style.filter = 'brightness(1.5)';
-<span id="line546"></span>                    });
-<span id="line547"></span>                    setTimeout(() =&gt; {
-<span id="line548"></span>                        cells.forEach(cell =&gt; {
-<span id="line549"></span>                            cell.style.animation = '';
-<span id="line550"></span>                            cell.style.filter = '';
-<span id="line551"></span>                        });
-<span id="line552"></span>                    }, 1000);
-<span id="line553"></span>                    return true;
-<span id="line554"></span>                }
-<span id="line555"></span>            },
-<span id="line556"></span>            {
-<span id="line557"></span>                name: 'Chain',
-<span id="line558"></span>                description: 'For 3 moves, matches can chain in any direction with 2x points!',
-<span id="line559"></span>                action: () =&gt; {
-<span id="line560"></span>                    chainModeActive = true;
-<span id="line561"></span>                    chainMovesLeft = 3;
-<span id="line562"></span>                    const cells = document.querySelectorAll('.cell');
-<span id="line563"></span>                    cells.forEach(cell =&gt; {
-<span id="line564"></span>                        cell.style.animation = 'colorBurst 0.5s ease-out';
-<span id="line565"></span>                    });
-<span id="line566"></span>                    setTimeout(() =&gt; {
-<span id="line567"></span>                        cells.forEach(cell =&gt; {
-<span id="line568"></span>                            cell.style.animation = '';
-<span id="line569"></span>                        });
-<span id="line570"></span>                    }, 500);
-<span id="line571"></span>                    return true;
-<span id="line572"></span>                }
-<span id="line573"></span>            },
-<span id="line574"></span>            {
-<span id="line575"></span>                name: 'Chaos Swap',
-<span id="line576"></span>                description: 'Randomly swaps 5 pairs of pieces',
-<span id="line577"></span>                action: () =&gt; {
-<span id="line578"></span>                    for(let i = 0; i </span><span>&lt; </span><span>5; i++) {
-<span id="line579"></span>                        const r1 = Math.floor(Math.random() * GRID_SIZE);
-<span id="line580"></span>                        const c1 = Math.floor(Math.random() * GRID_SIZE);
-<span id="line581"></span>                        const r2 = Math.floor(Math.random() * GRID_SIZE);
-<span id="line582"></span>                        const c2 = Math.floor(Math.random() * GRID_SIZE);
-<span id="line583"></span>                        const temp = gameBoard[r1][c1];
-<span id="line584"></span>                        gameBoard[r1][c1] = gameBoard[r2][c2];
-<span id="line585"></span>                        gameBoard[r2][c2] = temp;
-<span id="line586"></span>                    }
-<span id="line587"></span>                    updateBoard();
-<span id="line588"></span>                    return true;
-<span id="line589"></span>                }
-<span id="line590"></span>            }
-<span id="line591"></span>        ];
-<span id="line592"></span>
-<span id="line593"></span>        function createSVG(shape, color) {
-<span id="line594"></span>            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-<span id="line595"></span>            svg.setAttribute("viewBox", "0 0 100 100");
-<span id="line596"></span>            svg.style.width = "100%";
-<span id="line597"></span>            svg.style.height = "100%";
-<span id="line598"></span>
-<span id="line599"></span>            let path;
-<span id="line600"></span>            switch(shape) {
-<span id="line601"></span>                case 'circle':
-<span id="line602"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-<span id="line603"></span>                    path.setAttribute("cx", "50");
-<span id="line604"></span>                    path.setAttribute("cy", "50");
-<span id="line605"></span>                    path.setAttribute("r", "40");
-<span id="line606"></span>                    break;
-<span id="line607"></span>                case 'square':
-<span id="line608"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-<span id="line609"></span>                    path.setAttribute("x", "20");
-<span id="line610"></span>                    path.setAttribute("y", "20");
-<span id="line611"></span>                    path.setAttribute("width", "60");
-<span id="line612"></span>                    path.setAttribute("height", "60");
-<span id="line613"></span>                    break;
-<span id="line614"></span>                case 'triangle':
-<span id="line615"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-<span id="line616"></span>                    path.setAttribute("points", "50,20 80,80 20,80");
-<span id="line617"></span>                    break;
-<span id="line618"></span>                case 'diamond':
-<span id="line619"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-<span id="line620"></span>                    path.setAttribute("points", "50,20 80,50 50,80 20,50");
-<span id="line621"></span>                    break;
-<span id="line622"></span>                case 'star':
-<span id="line623"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-<span id="line624"></span>                    path.setAttribute("points", "50,10 61,40 92,40 67,60 76,90 50,73 24,90 33,60 8,40 39,40");
-<span id="line625"></span>                    break;
-<span id="line626"></span>                case 'hexagon':
-<span id="line627"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-<span id="line628"></span>                    path.setAttribute("points", "50,20 80,35 80,65 50,80 20,65 20,35");
-<span id="line629"></span>                    break;
-<span id="line630"></span>                case 'pentagon':
-<span id="line631"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-<span id="line632"></span>                    path.setAttribute("points", "50,20 80,40 70,80 30,80 20,40");
-<span id="line633"></span>                    break;
-<span id="line634"></span>                case 'octagon':
-<span id="line635"></span>                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-<span id="line636"></span>                    path.setAttribute("points", "30,20 70,20 80,30 80,70 70,80 30,80 20,70 20,30");
-<span id="line637"></span>                    break;
-<span id="line638"></span>            }
-<span id="line639"></span>            path.setAttribute("fill", color);
-<span id="line640"></span>            svg.appendChild(path);
-<span id="line641"></span>            return svg;
-<span id="line642"></span>        }
-<span id="line643"></span>
-<span id="line644"></span>        function initializeBoard(explode = false) {
-<span id="line645"></span>            const grid = document.getElementById('grid');
-<span id="line646"></span>            grid.innerHTML = '';
-<span id="line647"></span>            gameBoard = [];
-<span id="line648"></span>            grid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
-<span id="line649"></span>            
-<span id="line650"></span>            // Calculate available shapes and colors based on grid size
-<span id="line651"></span>            // Calculate available shapes and colors based on grid size
-<span id="line652"></span>            let availableShapes, availableColors;
-<span id="line653"></span>            if (GRID_SIZE </span><span>&lt;=</span><span> 8) {
-<span id="line654"></span>                availableShapes = shapes.slice(0, 4);
-<span id="line655"></span>                availableColors = colors.slice(0, 4);
-<span id="line656"></span>            } else if (GRID_SIZE </span><span>&lt;=</span><span> 9) {
-<span id="line657"></span>                availableShapes = shapes.slice(0, 5);
-<span id="line658"></span>                availableColors = colors.slice(0, 5);
-<span id="line659"></span>            } else if (GRID_SIZE </span><span>&lt;=</span><span> 10) {
-<span id="line660"></span>                availableShapes = shapes.slice(0, 6);
-<span id="line661"></span>                availableColors = colors.slice(0, 6);
-<span id="line662"></span>            } else if (GRID_SIZE </span><span>&lt;=</span><span> 11) {
-<span id="line663"></span>                availableShapes = shapes.slice(0, 7);
-<span id="line664"></span>                availableColors = colors.slice(0, 7);
-<span id="line665"></span>            } else {
-<span id="line666"></span>                availableShapes = shapes;
-<span id="line667"></span>                availableColors = colors;
-<span id="line668"></span>            }
-<span id="line669"></span>
-<span id="line670"></span>            for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line671"></span>                gameBoard[i] = [];
-<span id="line672"></span>                for(let j = 0; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line673"></span>                    const cell = document.createElement('div');
-<span id="line674"></span>                    cell.className = 'cell';
-<span id="line675"></span>                    const shapeIndex = Math.floor(Math.random() * availableShapes.length);
-<span id="line676"></span>                    const colorIndex = Math.floor(Math.random() * availableColors.length);
-<span id="line677"></span>                    
-<span id="line678"></span>                    gameBoard[i][j] = {
-<span id="line679"></span>                        shape: availableShapes[shapeIndex],
-<span id="line680"></span>                        color: availableColors[colorIndex]
-<span id="line681"></span>                    };
-<span id="line682"></span>
-<span id="line683"></span>                    if (explode) {
-<span id="line684"></span>                        cell.style.animation = `explode 0.5s ease-out ${(i + j) * 0.05}s`;
-<span id="line685"></span>                    }
-<span id="line686"></span>
-<span id="line687"></span>                    cell.appendChild(createSVG(shapes[shapeIndex], colors[colorIndex]));
-<span id="line688"></span>                    cell.dataset.row = i;
-<span id="line689"></span>                    cell.dataset.col = j;
-<span id="line690"></span>                    
-<span id="line691"></span>                    cell.addEventListener('click', handleCellClick);
-<span id="line692"></span>                    grid.appendChild(cell);
-<span id="line693"></span>                }
-<span id="line694"></span>            }
-<span id="line695"></span>        }
-<span id="line696"></span>
-<span id="line697"></span>        function handleCellClick(event) {
-<span id="line698"></span>            const cell = event.currentTarget;
-<span id="line699"></span>            const row = parseInt(cell.dataset.row);
-<span id="line700"></span>            const col = parseInt(cell.dataset.col);
-<span id="line701"></span>
-<span id="line702"></span>            if (activePowerup) {
-<span id="line703"></span>                if (activePowerup.action(row, col)) {
-<span id="line704"></span>                    removePowerup(activePowerup);
-<span id="line705"></span>                    activePowerup = null;
-<span id="line706"></span>                    setTimeout(checkMatches, 300);
-<span id="line707"></span>                }
-<span id="line708"></span>                return;
-<span id="line709"></span>            }
-<span id="line710"></span>
-<span id="line711"></span>            if (!selectedCell) {
-<span id="line712"></span>                selectedCell = cell;
-<span id="line713"></span>                cell.classList.add('selected');
-<span id="line714"></span>            } else {
-<span id="line715"></span>                const selectedRow = parseInt(selectedCell.dataset.row);
-<span id="line716"></span>                const selectedCol = parseInt(selectedCell.dataset.col);
-<span id="line717"></span>
-<span id="line718"></span>                if (isAdjacent(row, col, selectedRow, selectedCol)) {
-<span id="line719"></span>                    swapCells(row, col, selectedRow, selectedCol);
-<span id="line720"></span>                    selectedCell.classList.remove('selected');
-<span id="line721"></span>                    selectedCell = null;
-<span id="line722"></span>                    
-<span id="line723"></span>                    setTimeout(checkMatches, 300);
-<span id="line724"></span>                } else {
-<span id="line725"></span>                    selectedCell.classList.remove('selected');
-<span id="line726"></span>                    selectedCell = cell;
-<span id="line727"></span>                    cell.classList.add('selected');
-<span id="line728"></span>                }
-<span id="line729"></span>            }
-<span id="line730"></span>        }
-<span id="line731"></span>
-<span id="line732"></span>        function isAdjacent(row1, col1, row2, col2) {
-<span id="line733"></span>            return (Math.abs(row1 - row2) === 1 &amp;&amp; col1 === col2) ||
-<span id="line734"></span>                   (Math.abs(col1 - col2) === 1 &amp;&amp; row1 === row2);
-<span id="line735"></span>        }
-<span id="line736"></span>
-<span id="line737"></span>        function swapCells(row1, col1, row2, col2) {
-<span id="line738"></span>            const cell1 = document.querySelector(`[data-row="${row1}"][data-col="${col1}"]`);
-<span id="line739"></span>            const cell2 = document.querySelector(`[data-row="${row2}"][data-col="${col2}"]`);
-<span id="line740"></span>            
-<span id="line741"></span>            // Determine swap direction
-<span id="line742"></span>            if (col1 </span><span>&lt; </span><span>col2) {
-<span id="line743"></span>                cell1.classList.add('swap-right');
-<span id="line744"></span>                cell2.classList.add('swap-left');
-<span id="line745"></span>            } else if (col1 &gt; col2) {
-<span id="line746"></span>                cell1.classList.add('swap-left');
-<span id="line747"></span>                cell2.classList.add('swap-right');
-<span id="line748"></span>            } else if (row1 </span><span>&lt; </span><span>row2) {
-<span id="line749"></span>                cell1.classList.add('swap-down');
-<span id="line750"></span>                cell2.classList.add('swap-up');
-<span id="line751"></span>            } else {
-<span id="line752"></span>                cell1.classList.add('swap-up');
-<span id="line753"></span>                cell2.classList.add('swap-down');
-<span id="line754"></span>            }
-<span id="line755"></span>
-<span id="line756"></span>            const temp = gameBoard[row1][col1];
-<span id="line757"></span>            gameBoard[row1][col1] = gameBoard[row2][col2];
-<span id="line758"></span>            gameBoard[row2][col2] = temp;
-<span id="line759"></span>
-<span id="line760"></span>            // Remove animation classes after animation completes
-<span id="line761"></span>            setTimeout(() =&gt; {
-<span id="line762"></span>                cell1.classList.remove('swap-left', 'swap-right', 'swap-up', 'swap-down');
-<span id="line763"></span>                cell2.classList.remove('swap-left', 'swap-right', 'swap-up', 'swap-down');
-<span id="line764"></span>                updateBoard();
-<span id="line765"></span>            }, 300);
-<span id="line766"></span>        }
-<span id="line767"></span>
-<span id="line768"></span>        function updateBoard() {
-<span id="line769"></span>            const cells = document.querySelectorAll('.cell');
-<span id="line770"></span>            cells.forEach(cell =&gt; {
-<span id="line771"></span>                const row = parseInt(cell.dataset.row);
-<span id="line772"></span>                const col = parseInt(cell.dataset.col);
-<span id="line773"></span>                cell.innerHTML = '';
-<span id="line774"></span>                cell.appendChild(createSVG(gameBoard[row][col].shape, gameBoard[row][col].color));
-<span id="line775"></span>            });
-<span id="line776"></span>        }
-<span id="line777"></span>
-<span id="line778"></span>        function checkMatches() {
-<span id="line779"></span>            let matches = [];
-<span id="line780"></span>            
-<span id="line781"></span>            // Check horizontal matches
-<span id="line782"></span>            for(let i = 0; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line783"></span>                let colorRun = 1;
-<span id="line784"></span>                let shapeRun = 1;
-<span id="line785"></span>                let lastColor = gameBoard[i][0].color;
-<span id="line786"></span>                let lastShape = gameBoard[i][0].shape;
-<span id="line787"></span>                
-<span id="line788"></span>                for(let j = 1; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line789"></span>                    if(gameBoard[i][j].color === lastColor) {
-<span id="line790"></span>                        colorRun++;
-<span id="line791"></span>                    } else {
-<span id="line792"></span>                        if(colorRun &gt;= 3) {
-<span id="line793"></span>                            for(let k = j-colorRun; k </span><span>&lt; </span><span>j; k++) {
-<span id="line794"></span>                                matches.push({row: i, col: k});
-<span id="line795"></span>                            }
-<span id="line796"></span>                        }
-<span id="line797"></span>                        colorRun = 1;
-<span id="line798"></span>                        lastColor = gameBoard[i][j].color;
-<span id="line799"></span>                    }
-<span id="line800"></span>                    
-<span id="line801"></span>                    if(gameBoard[i][j].shape === lastShape) {
-<span id="line802"></span>                        shapeRun++;
-<span id="line803"></span>                    } else {
-<span id="line804"></span>                        if(shapeRun &gt;= 3) {
-<span id="line805"></span>                            for(let k = j-shapeRun; k </span><span>&lt; </span><span>j; k++) {
-<span id="line806"></span>                                matches.push({row: i, col: k});
-<span id="line807"></span>                            }
-<span id="line808"></span>                        }
-<span id="line809"></span>                        shapeRun = 1;
-<span id="line810"></span>                        lastShape = gameBoard[i][j].shape;
-<span id="line811"></span>                    }
-<span id="line812"></span>                }
-<span id="line813"></span>                
-<span id="line814"></span>                if(colorRun &gt;= 3) {
-<span id="line815"></span>                    for(let k = GRID_SIZE-colorRun; k </span><span>&lt; </span><span>GRID_SIZE; k++) {
-<span id="line816"></span>                        matches.push({row: i, col: k});
-<span id="line817"></span>                    }
-<span id="line818"></span>                }
-<span id="line819"></span>                if(shapeRun &gt;= 3) {
-<span id="line820"></span>                    for(let k = GRID_SIZE-shapeRun; k </span><span>&lt; </span><span>GRID_SIZE; k++) {
-<span id="line821"></span>                        matches.push({row: i, col: k});
-<span id="line822"></span>                    }
-<span id="line823"></span>                }
-<span id="line824"></span>            }
-<span id="line825"></span>            
-<span id="line826"></span>            // Check vertical matches
-<span id="line827"></span>            for(let j = 0; j </span><span>&lt; </span><span>GRID_SIZE; j++) {
-<span id="line828"></span>                let colorRun = 1;
-<span id="line829"></span>                let shapeRun = 1;
-<span id="line830"></span>                let lastColor = gameBoard[0][j].color;
-<span id="line831"></span>                let lastShape = gameBoard[0][j].shape;
-<span id="line832"></span>                
-<span id="line833"></span>                for(let i = 1; i </span><span>&lt; </span><span>GRID_SIZE; i++) {
-<span id="line834"></span>                    if(gameBoard[i][j].color === lastColor) {
-<span id="line835"></span>                        colorRun++;
-<span id="line836"></span>                    } else {
-<span id="line837"></span>                        if(colorRun &gt;= 3) {
-<span id="line838"></span>                            for(let k = i-colorRun; k </span><span>&lt; </span><span>i; k++) {
-<span id="line839"></span>                                matches.push({row: k, col: j});
-<span id="line840"></span>                            }
-<span id="line841"></span>                        }
-<span id="line842"></span>                        colorRun = 1;
-<span id="line843"></span>                        lastColor = gameBoard[i][j].color;
-<span id="line844"></span>                    }
-<span id="line845"></span>                    
-<span id="line846"></span>                    if(gameBoard[i][j].shape === lastShape) {
-<span id="line847"></span>                        shapeRun++;
-<span id="line848"></span>                    } else {
-<span id="line849"></span>                        if(shapeRun &gt;= 3) {
-<span id="line850"></span>                            for(let k = i-shapeRun; k </span><span>&lt; </span><span>i; k++) {
-<span id="line851"></span>                                matches.push({row: k, col: j});
-<span id="line852"></span>                            }
-<span id="line853"></span>                        }
-<span id="line854"></span>                        shapeRun = 1;
-<span id="line855"></span>                        lastShape = gameBoard[i][j].shape;
-<span id="line856"></span>                    }
-<span id="line857"></span>                }
-<span id="line858"></span>                
-<span id="line859"></span>                if(colorRun &gt;= 3) {
-<span id="line860"></span>                    for(let k = GRID_SIZE-colorRun; k </span><span>&lt; </span><span>GRID_SIZE; k++) {
-<span id="line861"></span>                        matches.push({row: k, col: j});
-<span id="line862"></span>                    }
-<span id="line863"></span>                }
-<span id="line864"></span>                if(shapeRun &gt;= 3) {
-<span id="line865"></span>                    for(let k = GRID_SIZE-shapeRun; k </span><span>&lt; </span><span>GRID_SIZE; k++) {
-<span id="line866"></span>                        matches.push({row: k, col: j});
-<span id="line867"></span>                    }
-<span id="line868"></span>                }
-<span id="line869"></span>            }
-<span id="line870"></span>
-<span id="line871"></span>            if(matches.length &gt; 0) {
-<span id="line872"></span>                // Remove duplicates
-<span id="line873"></span>                matches = Array.from(new Set(matches.map(JSON.stringify)), JSON.parse);
-<span id="line874"></span>                
-<span id="line875"></span>                // Check for chain matches if chain mode is active
-<span id="line876"></span>                if (chainModeActive) {
-<span id="line877"></span>                    const chainMatches = findChainMatches(matches);
-<span id="line878"></span>                    matches = [...matches, ...chainMatches];
-<span id="line879"></span>                    // Remove duplicates again after adding chain matches
-<span id="line880"></span>                    matches = Array.from(new Set(matches.map(JSON.stringify)), JSON.parse);
-<span id="line881"></span>                }
-<span id="line882"></span>                
-<span id="line883"></span>                // Calculate score
-<span id="line884"></span>                matches.forEach(match =&gt; {
-<span id="line885"></span>                    let points = 0;
-<span id="line886"></span>                    if(matches.some(m =&gt; 
-<span id="line887"></span>                        m.row === match.row &amp;&amp; 
-<span id="line888"></span>                        m.col === match.col &amp;&amp; 
-<span id="line889"></span>                        gameBoard[m.row][m.col].color === gameBoard[match.row][match.col].color)) {
-<span id="line890"></span>                        points++;
-<span id="line891"></span>                    }
-<span id="line892"></span>                    if(matches.some(m =&gt; 
-<span id="line893"></span>                        m.row === match.row &amp;&amp; 
-<span id="line894"></span>                        m.col === match.col &amp;&amp; 
-<span id="line895"></span>                        gameBoard[m.row][m.col].shape === gameBoard[match.row][match.col].shape)) {
-<span id="line896"></span>                        points++;
-<span id="line897"></span>                    }
-<span id="line898"></span>                    let finalPoints = points;
-<span id="line899"></span>                    if (goldRushMoves &gt; 0) {
-<span id="line900"></span>                        finalPoints *= 2;
-<span id="line901"></span>                    }
-<span id="line902"></span>                    updateScore(score + finalPoints);
-<span id="line903"></span>                });
-<span id="line904"></span>                
-<span id="line905"></span>                // Remove matched pieces and add new ones
-<span id="line906"></span>                matches.forEach(match =&gt; {
-<span id="line907"></span>                    const shapeIndex = Math.floor(Math.random() * shapes.length);
-<span id="line908"></span>                    const colorIndex = Math.floor(Math.random() * colors.length);
-<span id="line909"></span>                    const cell = document.querySelector(`[data-row="${match.row}"][data-col="${match.col}"]`);
-<span id="line910"></span>                    cell.classList.add('drop-in');
-<span id="line911"></span>                    gameBoard[match.row][match.col] = {
-<span id="line912"></span>                        shape: shapes[shapeIndex],
-<span id="line913"></span>                        color: colors[colorIndex]
-<span id="line914"></span>                    };
-<span id="line915"></span>                    setTimeout(() =&gt; {
-<span id="line916"></span>                        cell.classList.remove('drop-in');
-<span id="line917"></span>                    }, 500);
-<span id="line918"></span>                });
-<span id="line919"></span>                
-<span id="line920"></span>                document.getElementById('score').textContent = `Score: ${score}`;
-<span id="line921"></span>                
-<span id="line922"></span>                // Check for level up
-<span id="line923"></span>                if (score &gt;= 500 &amp;&amp; currentLevel === 1) {
-<span id="line924"></span>                    currentLevel++;
-<span id="line925"></span>                    showLevelUpMessage();
-<span id="line926"></span>                    setTimeout(() =&gt; {
-<span id="line927"></span>                        initializeBoard(true);
-<span id="line928"></span>                        setTimeout(() =&gt; {
-<span id="line929"></span>                            GRID_SIZE = 9;
-<span id="line930"></span>                            initializeBoard();
-<span id="line931"></span>                        }, 1000);
-<span id="line932"></span>                    }, 1000);
-<span id="line933"></span>                    return;
-<span id="line934"></span>                }
-<span id="line935"></span>                
-<span id="line936"></span>                updateBoard();
-<span id="line937"></span>                if (!frozenState) {
-<span id="line938"></span>                    setTimeout(checkMatches, 300);
-<span id="line939"></span>                }
-<span id="line940"></span>                
-<span id="line941"></span>                // Update powerup states
-<span id="line942"></span>                if (moveCounter &gt; 0) {
-<span id="line943"></span>                    moveCounter--;
-<span id="line944"></span>                    if (moveCounter === 0) {
-<span id="line945"></span>                        frozenState = false;
-<span id="line946"></span>                        document.querySelectorAll('.cell').forEach(cell =&gt; {
-<span id="line947"></span>                            cell.style.filter = '';
-<span id="line948"></span>                        });
-<span id="line949"></span>                    }
-<span id="line950"></span>                }
-<span id="line951"></span>                if (goldRushMoves &gt; 0) {
-<span id="line952"></span>                    goldRushMoves--;
-<span id="line953"></span>                    if (goldRushMoves === 0) {
-<span id="line954"></span>                        document.querySelectorAll('.cell').forEach(cell =&gt; {
-<span id="line955"></span>                            cell.style.filter = '';
-<span id="line956"></span>                        });
-<span id="line957"></span>                    }
-<span id="line958"></span>                }
-<span id="line959"></span>                
-<span id="line960"></span>                setTimeout(checkMatches, 300);
-<span id="line961"></span>            }
-<span id="line962"></span>        }
-<span id="line963"></span>
-<span id="line964"></span>        function replaceBlock(row, col) {
-<span id="line965"></span>            const shapeIndex = Math.floor(Math.random() * shapes.length);
-<span id="line966"></span>            const colorIndex = Math.floor(Math.random() * colors.length);
-<span id="line967"></span>            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-<span id="line968"></span>            cell.classList.add('drop-in');
-<span id="line969"></span>            gameBoard[row][col] = {
-<span id="line970"></span>                shape: shapes[shapeIndex],
-<span id="line971"></span>                color: colors[colorIndex]
-<span id="line972"></span>            };
-<span id="line973"></span>            setTimeout(() =&gt; {
-<span id="line974"></span>                cell.classList.remove('drop-in');
-<span id="line975"></span>            }, 500);
-<span id="line976"></span>        }
-<span id="line977"></span>
-<span id="line978"></span>        function showLevelUpMessage() {
-<span id="line979"></span>            const msg = document.createElement('div');
-<span id="line980"></span>            msg.className = 'level-up-message';
-<span id="line981"></span>            msg.textContent = 'Next Level Reached!';
-<span id="line982"></span>            document.body.appendChild(msg);
-<span id="line983"></span>            setTimeout(() =&gt; msg.remove(), 2000);
-<span id="line984"></span>        }
-<span id="line985"></span>
-<span id="line986"></span>        function getPowerupEmoji(name) {
-<span id="line987"></span>            const emojis = {
-<span id="line988"></span>                'Bomb': '💣',
-<span id="line989"></span>                'Line Clear': '⚡',
-<span id="line990"></span>                'Color Bomb': '🎨',
-<span id="line991"></span>                'Shape Bomb': '⭐',
-<span id="line992"></span>                'Points Boost': '💎',
-<span id="line993"></span>                'Rainbow': '🌈',
-<span id="line994"></span>                'Shuffle': '🔄',
-<span id="line995"></span>                'Wild Card': '🃏',
-<span id="line996"></span>                'Time Freeze': '❄️',
-<span id="line997"></span>                'Gold Rush': '💰',
-<span id="line998"></span>                'Chaos Swap': '🎲',
-<span id="line999"></span>                'Chain': '⛓️'
-<span id="line1000"></span>            };
-<span id="line1001"></span>            return emojis[name] || name;
-<span id="line1002"></span>        }
-<span id="line1003"></span>
-<span id="line1004"></span>        function buyPowerup() {
-<span id="line1005"></span>            if (score &gt;= 100) {
-<span id="line1006"></span>                score -= 100;
-<span id="line1007"></span>                document.getElementById('score').textContent = `Score: ${score}`;
-<span id="line1008"></span>                
-<span id="line1009"></span>                const randomPowerup = POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
-<span id="line1010"></span>                powerups.push({...randomPowerup});
-<span id="line1011"></span>                updatePowerupDock();
-<span id="line1012"></span>                
-<span id="line1013"></span>                // Update button state after purchase
-<span id="line1014"></span>                document.getElementById('powerupButton').disabled = score </span><span>&lt; </span><span>100;
-<span id="line1015"></span>            }
-<span id="line1016"></span>        }
-<span id="line1017"></span>
-<span id="line1018"></span>        function updatePowerupDock() {
-<span id="line1019"></span>            const dock = document.getElementById('powerupDock');
-<span id="line1020"></span>            dock.innerHTML = '';
-<span id="line1021"></span>            powerups.forEach((powerup, index) =&gt; {
-<span id="line1022"></span>                const powerupElement = document.createElement('div');
-<span id="line1023"></span>                powerupElement.className = 'powerup-item';
-<span id="line1024"></span>                powerupElement.innerHTML = `
-<span id="line1025"></span>                    </span><span>&lt;d</span><span>iv class="powerup-tooltip"&gt;${powerup.description}</span><span>&lt;/<span></span>d</span><span>iv&gt;
-<span id="line1026"></span>                    ${getPowerupEmoji(powerup.name)}
-<span id="line1027"></span>                `;
-<span id="line1028"></span>                powerupElement.addEventListener('click', () =&gt; activatePowerup(index));
-<span id="line1029"></span>                dock.appendChild(powerupElement);
-<span id="line1030"></span>            });
-<span id="line1031"></span>        }
-<span id="line1032"></span>
-<span id="line1033"></span>        function activatePowerup(index) {
-<span id="line1034"></span>            const powerup = powerups[index];
-<span id="line1035"></span>            // List of powerups that activate immediately
-<span id="line1036"></span>            const instantPowerups = ['Points Boost', 'Rainbow', 'Shuffle', 'Time Freeze', 'Gold Rush', 'Chaos Swap'];
-<span id="line1037"></span>            
-<span id="line1038"></span>            if (instantPowerups.includes(powerup.name)) {
-<span id="line1039"></span>                if (powerup.action()) {
-<span id="line1040"></span>                    removePowerup(powerup);
-<span id="line1041"></span>                }
-<span id="line1042"></span>            } else {
-<span id="line1043"></span>                if (activePowerup) {
-<span id="line1044"></span>                    activePowerup = null;
-<span id="line1045"></span>                } else {
-<span id="line1046"></span>                    activePowerup = powerup;
-<span id="line1047"></span>                }
-<span id="line1048"></span>            }
-<span id="line1049"></span>        }
-<span id="line1050"></span>
-<span id="line1051"></span>        function removePowerup(powerup) {
-<span id="line1052"></span>            const index = powerups.indexOf(powerup);
-<span id="line1053"></span>            if (index &gt; -1) {
-<span id="line1054"></span>                powerups.splice(index, 1);
-<span id="line1055"></span>                updatePowerupDock();
-<span id="line1056"></span>            }
-<span id="line1057"></span>        }
-<span id="line1058"></span>
-<span id="line1059"></span>        // Create background effects
-<span id="line1060"></span>        function createBackgroundEffects() {
-<span id="line1061"></span>            const container = document.createElement('div');
-<span id="line1062"></span>            container.className = 'background-effect';
-<span id="line1063"></span>            
-<span id="line1064"></span>            // Create particles
-<span id="line1065"></span>            for(let i = 0; i </span><span>&lt; </span><span>20; i++) {
-<span id="line1066"></span>                const particle = document.createElement('div');
-<span id="line1067"></span>                particle.className = 'particle';
-<span id="line1068"></span>                particle.style.left = Math.random() * 100 + '%';
-<span id="line1069"></span>                particle.style.top = Math.random() * 100 + '%';
-<span id="line1070"></span>                particle.style.animationDelay = Math.random() * 3 + 's';
-<span id="line1071"></span>                container.appendChild(particle);
-<span id="line1072"></span>            }
-<span id="line1073"></span>            
-<span id="line1074"></span>            // Create waves
-<span id="line1075"></span>            for(let i = 0; i </span><span>&lt; </span><span>3; i++) {
-<span id="line1076"></span>                const wave = document.createElement('div');
-<span id="line1077"></span>                wave.className = 'wave';
-<span id="line1078"></span>                wave.style.top = 30 + (i * 30) + '%';
-<span id="line1079"></span>                wave.style.animationDelay = i * 2 + 's';
-<span id="line1080"></span>                container.appendChild(wave);
-<span id="line1081"></span>            }
-<span id="line1082"></span>            
-<span id="line1083"></span>            document.body.appendChild(container);
-<span id="line1084"></span>        }
-<span id="line1085"></span>
-<span id="line1086"></span>        // Update progress bar
-<span id="line1087"></span>        function updateProgressBar() {
-<span id="line1088"></span>            const progress = (score / 500) * 100;
-<span id="line1089"></span>            document.querySelector('.progress-bar').style.width = Math.min(100, progress) + '%';
-<span id="line1090"></span>        }
-<span id="line1091"></span>
-<span id="line1092"></span>        document.getElementById('readyBtn').addEventListener('click', () =&gt; {
-<span id="line1093"></span>            document.getElementById('startMenu').style.display = 'none';
-<span id="line1094"></span>            document.getElementById('gameContainer').style.display = 'block';
-<span id="line1095"></span>            createBackgroundEffects();
-<span id="line1096"></span>            initializeBoard();
-<span id="line1097"></span>        });
-<span id="line1098"></span>
-<span id="line1099"></span>        document.getElementById('powerupButton').addEventListener('click', buyPowerup);
-<span id="line1100"></span>        document.getElementById('powerupInfoBtn').addEventListener('click', () =&gt; {
-<span id="line1101"></span>            const modal = document.getElementById('powerupInfoModal');
-<span id="line1102"></span>            const list = document.getElementById('powerupsList');
-<span id="line1103"></span>            list.innerHTML = POWERUP_TYPES.map(powerup =&gt; `
-<span id="line1104"></span>                </span><span>&lt;d</span><span>iv style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;"&gt;
-<span id="line1105"></span>                    </span><span>&lt;s</span><span>trong&gt;${getPowerupEmoji(powerup.name)} ${powerup.name}</span><span>&lt;/<span>s</span>t</span><span>rong&gt;
-<span id="line1106"></span>                    </span><span>&lt;d</span><span>iv style="margin-top: 5px; opacity: 0.8;"&gt;${powerup.description}</span><span>&lt;/<span></span>d</span><span>iv&gt;
-<span id="line1107"></span>                </span><span>&lt;/<span></span>d</span><span>iv&gt;
-<span id="line1108"></span>            `).join('');
-<span id="line1109"></span>            modal.style.display = 'block';
-<span id="line1110"></span>        });
-<span id="line1111"></span>
-<span id="line1112"></span>        // Update button state when score changes
-<span id="line1113"></span>        function findChainMatches(initialMatches) {
-<span id="line1114"></span>            const chainMatches = [];
-<span id="line1115"></span>            const directions = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
-<span id="line1116"></span>            
-<span id="line1117"></span>            initialMatches.forEach(match =&gt; {
-<span id="line1118"></span>                const {row, col} = match;
-<span id="line1119"></span>                const currentPiece = gameBoard[row][col];
-<span id="line1120"></span>                
-<span id="line1121"></span>                directions.forEach(([dx, dy]) =&gt; {
-<span id="line1122"></span>                    let newRow = row + dx;
-<span id="line1123"></span>                    let newCol = col + dy;
-<span id="line1124"></span>                    
-<span id="line1125"></span>                    while (newRow &gt;= 0 &amp;&amp; newRow </span><span>&lt; </span><span>GRID_SIZE &amp;&amp; newCol &gt;= 0 &amp;&amp; newCol </span><span>&lt; </span><span>GRID_SIZE) {
-<span id="line1126"></span>                        const checkPiece = gameBoard[newRow][newCol];
-<span id="line1127"></span>                        if (checkPiece.color === currentPiece.color || checkPiece.shape === currentPiece.shape) {
-<span id="line1128"></span>                            chainMatches.push({row: newRow, col: newCol});
-<span id="line1129"></span>                        }
-<span id="line1130"></span>                        newRow += dx;
-<span id="line1131"></span>                        newCol += dy;
-<span id="line1132"></span>                    }
-<span id="line1133"></span>                });
-<span id="line1134"></span>            });
-<span id="line1135"></span>            
-<span id="line1136"></span>            return chainMatches;
-<span id="line1137"></span>        }
-<span id="line1138"></span>
-<span id="line1139"></span>        function updateScore(value) {
-<span id="line1140"></span>            score = value;
-<span id="line1141"></span>            document.getElementById('score').textContent = `Score: ${score}`;
-<span id="line1142"></span>            document.getElementById('powerupButton').disabled = score </span><span>&lt; </span><span>100;
-<span id="line1143"></span>            updateProgressBar();
-<span id="line1144"></span>        }
-<span id="line1145"></span>
-<span id="line1146"></span>        // Initialize score tracking
-<span id="line1147"></span>        updateScore(0);
-<span id="line1148"></span>    </span><span>&lt;/<span class="end-tag">script</span>&gt;</span><span>
-<span id="line1149"></span></span><span>&lt;<span class="start-tag">script</span>&gt;</span><span>
-<span id="line1150"></span>(function() {
-<span id="line1151"></span>    var originalConsoleError = console.error;
-<span id="line1152"></span>    console.error = function() {
-<span id="line1153"></span>        window.parent.postMessage({
-<span id="line1154"></span>            type: 'error',
-<span id="line1155"></span>            message: Array.from(arguments).join(' ')
-<span id="line1156"></span>        }, '*');
-<span id="line1157"></span>        originalConsoleError.apply(console, arguments);
-<span id="line1158"></span>    };
-<span id="line1159"></span>
-<span id="line1160"></span>    window.addEventListener('error', function(event) {
-<span id="line1161"></span>        window.parent.postMessage({
-<span id="line1162"></span>            type: 'error',
-<span id="line1163"></span>            message: event.message,
-<span id="line1164"></span>            source: event.filename,
-<span id="line1165"></span>            lineno: event.lineno,
-<span id="line1166"></span>            colno: event.colno,
-<span id="line1167"></span>            error: event.error ? event.error.stack : null
-<span id="line1168"></span>        }, '*');
-<span id="line1169"></span>    });
-<span id="line1170"></span>
-<span id="line1171"></span>    window.addEventListener('unhandledrejection', function(event) {
-<span id="line1172"></span>        window.parent.postMessage({
-<span id="line1173"></span>            type: 'error',
-<span id="line1174"></span>            message: 'Unhandled Promise Rejection: ' + event.reason,
-<span id="line1175"></span>            error: event.reason ? event.reason.stack : null
-<span id="line1176"></span>        }, '*');
-<span id="line1177"></span>    });
-<span id="line1178"></span>})();
-<span id="line1179"></span></span><span>&lt;/<span class="end-tag">script</span>&gt;</span><span></span><span>&lt;<span class="start-tag">script</span> <span class="attribute-name">defer</span> <span class="attribute-name">src</span>="<a class="attribute-value" href="view-source:https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015">https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015</a>" <span class="attribute-name">integrity</span>="<a class="attribute-value">sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==</a>" <span class="attribute-name">data-cf-beacon</span>='<a class="attribute-value">{"rayId":"8f855e1fbd1cb0c3","version":"2024.10.5","r":1,"token":"5562e2e56e7244b2af1869a8c731adb3","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}</a>' <span class="attribute-name">crossorigin</span>="<a class="attribute-value">anonymous</a>"&gt;</span><span></span><span>&lt;/<span class="end-tag">script</span>&gt;</span><span>
-<span id="line1180"></span></span><span>&lt;/<span class="end-tag">body</span>&gt;</span><span>
-<span id="line1181"></span></span><span>&lt;/<span class="end-tag">html</span>&gt;</span><span>
-<span id="line1182"></span></span></pre></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Match Mania</title>
+    <meta name="description" content="Match shapes and colors in this addictive puzzle game. Combine similar shapes or colors for points, match both for bonus points!">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .background-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 3s infinite;
+        }
+
+        .wave {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            width: 200%;
+            animation: wave 8s linear infinite;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #1a1a2e;
+            font-family: Arial, sans-serif;
+            touch-action: none;
+            overflow: hidden;
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 352px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #4fd1c5;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        #gameContainer {
+            display: none;
+        }
+
+        #startMenu {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        #startMenu h1 {
+            margin-bottom: 20px;
+            color: #4fd1c5;
+        }
+
+        #startMenu p {
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        #readyBtn {
+            background: #4fd1c5;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        #readyBtn:hover {
+            background: #38b2ac;
+        }
+
+        #score {
+            color: white;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        #powerupButton {
+            background: #4fd1c5;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+            margin: 10px 0;
+        }
+
+        #powerupButton:disabled {
+            background: #2d7c76;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        #powerupDock {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-top: 15px;
+            min-height: 70px;
+            align-items: center;
+        }
+
+        .powerup-item {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .powerup-item:hover {
+            transform: scale(1.1);
+        }
+
+        .powerup-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .powerup-item:hover .powerup-tooltip {
+            display: block;
+        }
+
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .cell:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .selected {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes swapLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-44px); }
+        }
+
+        @keyframes swapRight {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(44px); }
+        }
+
+        @keyframes swapUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-44px); }
+        }
+
+        @keyframes swapDown {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(44px); }
+        }
+
+        @keyframes dropIn {
+            0% { 
+                transform: translateY(-500px);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(20px);
+            }
+            100% { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes explode {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5) rotate(180deg);
+                opacity: 0.5;
+            }
+            100% { 
+                transform: scale(2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes colorBurst {
+            0% { filter: brightness(1); transform: scale(1); }
+            50% { filter: brightness(1.5); transform: scale(1.2); }
+            100% { filter: brightness(1); transform: scale(1); }
+        }
+
+        @keyframes shapeBurst {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes rainbowPulse {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        @keyframes shuffle {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-30deg); }
+            75% { transform: rotate(30deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .level-up-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 24px;
+            z-index: 1000;
+            animation: fadeInOut 2s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .swap-left { animation: swapLeft 0.3s ease-in-out; }
+        .swap-right { animation: swapRight 0.3s ease-in-out; }
+        .swap-up { animation: swapUp 0.3s ease-in-out; }
+        .swap-down { animation: swapDown 0.3s ease-in-out; }
+        .drop-in { animation: dropIn 0.5s ease-out; }
+
+        @media (max-width: 600px) {
+            .cell {
+                width: 35px;
+                height: 35px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="startMenu">
+        <h1>Shape Match Mania</h1>
+        <p>Welcome to an addictive puzzle adventure!<br>
+           Match 3+ pieces to score points:<br>
+           🎨 Same color: +1 point each<br>
+           ⭐ Same shape: +1 point each<br>
+           ✨ Both match: +2 points each!</p>
+        <p>🎮 How to play:<br>
+           • Swap adjacent pieces by clicking/tapping<br>
+           • Buy powerups at 100 points - some activate instantly!<br>
+           • Chain matches in any direction for bonus points<br>
+           • Reach 500 points to level up!</p>
+        <button id="readyBtn">Ready to Play!</button>
+    </div>
+
+    <div id="gameContainer">
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 0%"></div>
+        </div>
+        <div style="display: flex; width: 100%; max-width: 352px; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div id="score">Score: 0</div>
+            <div style="display: flex; gap: 10px;">
+                <button id="powerupButton" disabled>? Powerup</button>
+                <button id="powerupInfoBtn" style="background: #4fd1c5; border: none; padding: 10px 20px; border-radius: 5px; color: white; cursor: pointer; font-size: 16px; transition: background 0.3s;">ℹ️ Info</button>
+            </div>
+        </div>
+        <div id="powerupInfoModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0, 0, 0, 0.95); padding: 20px; border-radius: 10px; color: white; z-index: 1000; max-width: 90%; max-height: 90%; overflow-y: auto;">
+            <h2 style="color: #4fd1c5; margin-bottom: 15px;">Available Powerups</h2>
+            <div id="powerupsList" style="display: grid; gap: 10px;"></div>
+            <button onclick="document.getElementById('powerupInfoModal').style.display='none'" style="background: #4fd1c5; border: none; padding: 8px 16px; border-radius: 5px; color: white; margin-top: 15px; cursor: pointer;">Close</button>
+        </div>
+        <div id="grid"></div>
+        <div id="powerupDock"></div>
+    </div>
+
+    <script>
+        const shapes = ['circle', 'square', 'triangle', 'diamond', 'star', 'hexagon', 'pentagon', 'octagon'];
+        const colors = ['#FF0000', '#FFA500', '#FFD700', '#008000', '#0000FF', '#DDA0DD', '#8A2BE2', '#FFFFFF'];
+        let score = 0;
+        let selectedCell = null;
+        let gameBoard = [];
+        let GRID_SIZE = 8;
+        let currentLevel = 1;
+        let powerups = [];
+        let activePowerup = null;
+        let frozenState = false;
+        let goldRushMoves = 0;
+        let moveCounter = 0;
+        let chainModeActive = false;
+        let chainMovesLeft = 0;
+
+        const POWERUP_TYPES = [
+            {
+                name: 'Bomb',
+                description: 'Removes a 3x3 grid of blocks',
+                action: (row, col) => {
+                    for(let i = -1; i <= 1; i++) {
+                        for(let j = -1; j <= 1; j++) {
+                            const newRow = row + i;
+                            const newCol = col + j;
+                            if(newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+                                const cell = document.querySelector(`[data-row="${newRow}"][data-col="${newCol}"]`);
+                                cell.style.animation = `explode 0.5s ease-out ${(Math.abs(i) + Math.abs(j)) * 0.1}s`;
+                                setTimeout(() => replaceBlock(newRow, newCol), 500);
+                            }
+                        }
+                    }
+                    return true;
+                }
+            },
+            {
+                name: 'Line Clear',
+                description: 'Clears entire row and column',
+                action: (row, col) => {
+                    for(let i = 0; i < GRID_SIZE; i++) {
+                        replaceBlock(row, i);
+                        replaceBlock(i, col);
+                    }
+                    return true;
+                }
+            },
+            {
+                name: 'Color Bomb',
+                description: 'Removes all blocks of the clicked color',
+                action: (row, col) => {
+                    const targetColor = gameBoard[row][col].color;
+                    for(let i = 0; i < GRID_SIZE; i++) {
+                        for(let j = 0; j < GRID_SIZE; j++) {
+                            if(gameBoard[i][j].color === targetColor) {
+                                const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+                                cell.style.animation = `colorBurst 0.5s ease-out ${(i + j) * 0.05}s`;
+                                setTimeout(() => replaceBlock(i, j), 500);
+                            }
+                        }
+                    }
+                    return true;
+                }
+            },
+            {
+                name: 'Shape Bomb',
+                description: 'Removes all blocks of the clicked shape',
+                action: (row, col) => {
+                    const targetShape = gameBoard[row][col].shape;
+                    for(let i = 0; i < GRID_SIZE; i++) {
+                        for(let j = 0; j < GRID_SIZE; j++) {
+                            if(gameBoard[i][j].shape === targetShape) {
+                                const cell = document.querySelector(`[data-row="${i}"][data-col="${j}"]`);
+                                cell.style.animation = `shapeBurst 0.5s ease-out ${(i + j) * 0.05}s`;
+                                setTimeout(() => replaceBlock(i, j), 500);
+                            }
+                        }
+                    }
+                    return true;
+                }
+            },
+            {
+                name: 'Points Boost',
+                description: '+100 points instantly!',
+                action: () => {
+                    updateScore(score + 100);
+                    return true;
+                }
+            },
+            {
+                name: 'Rainbow',
+                description: 'Changes all pieces to random colors!',
+                action: () => {
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => {
+                        cell.style.animation = 'rainbowPulse 1s linear';
+                    });
+                    setTimeout(() => {
+                        for(let i = 0; i < GRID_SIZE; i++) {
+                            for(let j = 0; j < GRID_SIZE; j++) {
+                                gameBoard[i][j].color = colors[Math.floor(Math.random() * colors.length)];
+                            }
+                        }
+                        updateBoard();
+                        cells.forEach(cell => {
+                            cell.style.animation = '';
+                        });
+                    }, 1000);
+                    return true;
+                }
+            },
+            {
+                name: 'Shuffle',
+                description: 'Randomly rearranges all pieces!',
+                action: () => {
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => {
+                        cell.style.animation = 'shuffle 0.5s ease-in-out';
+                    });
+                    setTimeout(() => {
+                        for(let i = GRID_SIZE-1; i > 0; i--) {
+                            for(let j = GRID_SIZE-1; j > 0; j--) {
+                                const randI = Math.floor(Math.random() * (i + 1));
+                                const randJ = Math.floor(Math.random() * (j + 1));
+                                const temp = gameBoard[i][j];
+                                gameBoard[i][j] = gameBoard[randI][randJ];
+                                gameBoard[randI][randJ] = temp;
+                            }
+                        }
+                        updateBoard();
+                        cells.forEach(cell => {
+                            cell.style.animation = '';
+                        });
+                    }, 500);
+                    return true;
+                }
+            },
+            {
+                name: 'Wild Card',
+                description: 'Next piece clicked matches everything!',
+                action: (row, col) => {
+                    const clickedPiece = gameBoard[row][col];
+                    for(let i = 0; i < GRID_SIZE; i++) {
+                        for(let j = 0; j < GRID_SIZE; j++) {
+                            if(i !== row || j !== col) {
+                                gameBoard[i][j].shape = clickedPiece.shape;
+                                gameBoard[i][j].color = clickedPiece.color;
+                            }
+                        }
+                    }
+                    updateBoard();
+                    return true;
+                }
+            },
+            {
+                name: 'Time Freeze',
+                description: 'Stops new pieces for next 3 moves',
+                action: () => {
+                    frozenState = true;
+                    moveCounter = 3;
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => {
+                        cell.style.animation = 'colorBurst 0.5s ease-out';
+                        cell.style.filter = 'brightness(0.7) saturate(1.5)';
+                    });
+                    setTimeout(() => {
+                        cells.forEach(cell => {
+                            cell.style.animation = '';
+                        });
+                    }, 500);
+                    return true;
+                }
+            },
+            {
+                name: 'Gold Rush',
+                description: 'All matches give double points for next 3 moves',
+                action: () => {
+                    goldRushMoves = 3;
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => {
+                        cell.style.animation = 'rainbowPulse 1s linear';
+                        cell.style.filter = 'brightness(1.5)';
+                    });
+                    setTimeout(() => {
+                        cells.forEach(cell => {
+                            cell.style.animation = '';
+                            cell.style.filter = '';
+                        });
+                    }, 1000);
+                    return true;
+                }
+            },
+            {
+                name: 'Chain',
+                description: 'For 3 moves, matches can chain in any direction with 2x points!',
+                action: () => {
+                    chainModeActive = true;
+                    chainMovesLeft = 3;
+                    const cells = document.querySelectorAll('.cell');
+                    cells.forEach(cell => {
+                        cell.style.animation = 'colorBurst 0.5s ease-out';
+                    });
+                    setTimeout(() => {
+                        cells.forEach(cell => {
+                            cell.style.animation = '';
+                        });
+                    }, 500);
+                    return true;
+                }
+            },
+            {
+                name: 'Chaos Swap',
+                description: 'Randomly swaps 5 pairs of pieces',
+                action: () => {
+                    for(let i = 0; i < 5; i++) {
+                        const r1 = Math.floor(Math.random() * GRID_SIZE);
+                        const c1 = Math.floor(Math.random() * GRID_SIZE);
+                        const r2 = Math.floor(Math.random() * GRID_SIZE);
+                        const c2 = Math.floor(Math.random() * GRID_SIZE);
+                        const temp = gameBoard[r1][c1];
+                        gameBoard[r1][c1] = gameBoard[r2][c2];
+                        gameBoard[r2][c2] = temp;
+                    }
+                    updateBoard();
+                    return true;
+                }
+            }
+        ];
+
+        function createSVG(shape, color) {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 100 100");
+            svg.style.width = "100%";
+            svg.style.height = "100%";
+
+            let path;
+            switch(shape) {
+                case 'circle':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    path.setAttribute("cx", "50");
+                    path.setAttribute("cy", "50");
+                    path.setAttribute("r", "40");
+                    break;
+                case 'square':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    path.setAttribute("x", "20");
+                    path.setAttribute("y", "20");
+                    path.setAttribute("width", "60");
+                    path.setAttribute("height", "60");
+                    break;
+                case 'triangle':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    path.setAttribute("points", "50,20 80,80 20,80");
+                    break;
+                case 'diamond':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    path.setAttribute("points", "50,20 80,50 50,80 20,50");
+                    break;
+                case 'star':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    path.setAttribute("points", "50,10 61,40 92,40 67,60 76,90 50,73 24,90 33,60 8,40 39,40");
+                    break;
+                case 'hexagon':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    path.setAttribute("points", "50,20 80,35 80,65 50,80 20,65 20,35");
+                    break;
+                case 'pentagon':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    path.setAttribute("points", "50,20 80,40 70,80 30,80 20,40");
+                    break;
+                case 'octagon':
+                    path = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    path.setAttribute("points", "30,20 70,20 80,30 80,70 70,80 30,80 20,70 20,30");
+                    break;
+            }
+            path.setAttribute("fill", color);
+            svg.appendChild(path);
+            return svg;
+        }
+
+        function initializeBoard(explode = false) {
+            const grid = document.getElementById('grid');
+            grid.innerHTML = '';
+            gameBoard = [];
+            grid.style.gridTemplateColumns = `repeat(${GRID_SIZE}, 1fr)`;
+            
+            // Calculate available shapes and colors based on grid size
+            // Calculate available shapes and colors based on grid size
+            let availableShapes, availableColors;
+            if (GRID_SIZE <= 8) {
+                availableShapes = shapes.slice(0, 4);
+                availableColors = colors.slice(0, 4);
+            } else if (GRID_SIZE <= 9) {
+                availableShapes = shapes.slice(0, 5);
+                availableColors = colors.slice(0, 5);
+            } else if (GRID_SIZE <= 10) {
+                availableShapes = shapes.slice(0, 6);
+                availableColors = colors.slice(0, 6);
+            } else if (GRID_SIZE <= 11) {
+                availableShapes = shapes.slice(0, 7);
+                availableColors = colors.slice(0, 7);
+            } else {
+                availableShapes = shapes;
+                availableColors = colors;
+            }
+
+            for(let i = 0; i < GRID_SIZE; i++) {
+                gameBoard[i] = [];
+                for(let j = 0; j < GRID_SIZE; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const shapeIndex = Math.floor(Math.random() * availableShapes.length);
+                    const colorIndex = Math.floor(Math.random() * availableColors.length);
+                    
+                    gameBoard[i][j] = {
+                        shape: availableShapes[shapeIndex],
+                        color: availableColors[colorIndex]
+                    };
+
+                    if (explode) {
+                        cell.style.animation = `explode 0.5s ease-out ${(i + j) * 0.05}s`;
+                    }
+
+                    cell.appendChild(createSVG(shapes[shapeIndex], colors[colorIndex]));
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    
+                    cell.addEventListener('click', handleCellClick);
+                    grid.appendChild(cell);
+                }
+            }
+        }
+
+        function handleCellClick(event) {
+            const cell = event.currentTarget;
+            const row = parseInt(cell.dataset.row);
+            const col = parseInt(cell.dataset.col);
+
+            if (activePowerup) {
+                if (activePowerup.action(row, col)) {
+                    removePowerup(activePowerup);
+                    activePowerup = null;
+                    setTimeout(checkMatches, 300);
+                }
+                return;
+            }
+
+            if (!selectedCell) {
+                selectedCell = cell;
+                cell.classList.add('selected');
+            } else {
+                const selectedRow = parseInt(selectedCell.dataset.row);
+                const selectedCol = parseInt(selectedCell.dataset.col);
+
+                if (isAdjacent(row, col, selectedRow, selectedCol)) {
+                    swapCells(row, col, selectedRow, selectedCol);
+                    selectedCell.classList.remove('selected');
+                    selectedCell = null;
+                    
+                    setTimeout(checkMatches, 300);
+                } else {
+                    selectedCell.classList.remove('selected');
+                    selectedCell = cell;
+                    cell.classList.add('selected');
+                }
+            }
+        }
+
+        function isAdjacent(row1, col1, row2, col2) {
+            return (Math.abs(row1 - row2) === 1 && col1 === col2) ||
+                   (Math.abs(col1 - col2) === 1 && row1 === row2);
+        }
+
+        function swapCells(row1, col1, row2, col2) {
+            const cell1 = document.querySelector(`[data-row="${row1}"][data-col="${col1}"]`);
+            const cell2 = document.querySelector(`[data-row="${row2}"][data-col="${col2}"]`);
+            
+            // Determine swap direction
+            if (col1 < col2) {
+                cell1.classList.add('swap-right');
+                cell2.classList.add('swap-left');
+            } else if (col1 > col2) {
+                cell1.classList.add('swap-left');
+                cell2.classList.add('swap-right');
+            } else if (row1 < row2) {
+                cell1.classList.add('swap-down');
+                cell2.classList.add('swap-up');
+            } else {
+                cell1.classList.add('swap-up');
+                cell2.classList.add('swap-down');
+            }
+
+            const temp = gameBoard[row1][col1];
+            gameBoard[row1][col1] = gameBoard[row2][col2];
+            gameBoard[row2][col2] = temp;
+
+            // Remove animation classes after animation completes
+            setTimeout(() => {
+                cell1.classList.remove('swap-left', 'swap-right', 'swap-up', 'swap-down');
+                cell2.classList.remove('swap-left', 'swap-right', 'swap-up', 'swap-down');
+                updateBoard();
+            }, 300);
+        }
+
+        function updateBoard() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                cell.innerHTML = '';
+                cell.appendChild(createSVG(gameBoard[row][col].shape, gameBoard[row][col].color));
+            });
+        }
+
+        function checkMatches() {
+            let matches = [];
+            
+            // Check horizontal matches
+            for(let i = 0; i < GRID_SIZE; i++) {
+                let colorRun = 1;
+                let shapeRun = 1;
+                let lastColor = gameBoard[i][0].color;
+                let lastShape = gameBoard[i][0].shape;
+                
+                for(let j = 1; j < GRID_SIZE; j++) {
+                    if(gameBoard[i][j].color === lastColor) {
+                        colorRun++;
+                    } else {
+                        if(colorRun >= 3) {
+                            for(let k = j-colorRun; k < j; k++) {
+                                matches.push({row: i, col: k});
+                            }
+                        }
+                        colorRun = 1;
+                        lastColor = gameBoard[i][j].color;
+                    }
+                    
+                    if(gameBoard[i][j].shape === lastShape) {
+                        shapeRun++;
+                    } else {
+                        if(shapeRun >= 3) {
+                            for(let k = j-shapeRun; k < j; k++) {
+                                matches.push({row: i, col: k});
+                            }
+                        }
+                        shapeRun = 1;
+                        lastShape = gameBoard[i][j].shape;
+                    }
+                }
+                
+                if(colorRun >= 3) {
+                    for(let k = GRID_SIZE-colorRun; k < GRID_SIZE; k++) {
+                        matches.push({row: i, col: k});
+                    }
+                }
+                if(shapeRun >= 3) {
+                    for(let k = GRID_SIZE-shapeRun; k < GRID_SIZE; k++) {
+                        matches.push({row: i, col: k});
+                    }
+                }
+            }
+            
+            // Check vertical matches
+            for(let j = 0; j < GRID_SIZE; j++) {
+                let colorRun = 1;
+                let shapeRun = 1;
+                let lastColor = gameBoard[0][j].color;
+                let lastShape = gameBoard[0][j].shape;
+                
+                for(let i = 1; i < GRID_SIZE; i++) {
+                    if(gameBoard[i][j].color === lastColor) {
+                        colorRun++;
+                    } else {
+                        if(colorRun >= 3) {
+                            for(let k = i-colorRun; k < i; k++) {
+                                matches.push({row: k, col: j});
+                            }
+                        }
+                        colorRun = 1;
+                        lastColor = gameBoard[i][j].color;
+                    }
+                    
+                    if(gameBoard[i][j].shape === lastShape) {
+                        shapeRun++;
+                    } else {
+                        if(shapeRun >= 3) {
+                            for(let k = i-shapeRun; k < i; k++) {
+                                matches.push({row: k, col: j});
+                            }
+                        }
+                        shapeRun = 1;
+                        lastShape = gameBoard[i][j].shape;
+                    }
+                }
+                
+                if(colorRun >= 3) {
+                    for(let k = GRID_SIZE-colorRun; k < GRID_SIZE; k++) {
+                        matches.push({row: k, col: j});
+                    }
+                }
+                if(shapeRun >= 3) {
+                    for(let k = GRID_SIZE-shapeRun; k < GRID_SIZE; k++) {
+                        matches.push({row: k, col: j});
+                    }
+                }
+            }
+
+            if(matches.length > 0) {
+                // Remove duplicates
+                matches = Array.from(new Set(matches.map(JSON.stringify)), JSON.parse);
+                
+                // Check for chain matches if chain mode is active
+                if (chainModeActive) {
+                    const chainMatches = findChainMatches(matches);
+                    matches = [...matches, ...chainMatches];
+                    // Remove duplicates again after adding chain matches
+                    matches = Array.from(new Set(matches.map(JSON.stringify)), JSON.parse);
+                }
+                
+                // Calculate score
+                matches.forEach(match => {
+                    let points = 0;
+                    if(matches.some(m => 
+                        m.row === match.row && 
+                        m.col === match.col && 
+                        gameBoard[m.row][m.col].color === gameBoard[match.row][match.col].color)) {
+                        points++;
+                    }
+                    if(matches.some(m => 
+                        m.row === match.row && 
+                        m.col === match.col && 
+                        gameBoard[m.row][m.col].shape === gameBoard[match.row][match.col].shape)) {
+                        points++;
+                    }
+                    let finalPoints = points;
+                    if (goldRushMoves > 0) {
+                        finalPoints *= 2;
+                    }
+                    updateScore(score + finalPoints);
+                });
+                
+                // Remove matched pieces and add new ones
+                matches.forEach(match => {
+                    const shapeIndex = Math.floor(Math.random() * shapes.length);
+                    const colorIndex = Math.floor(Math.random() * colors.length);
+                    const cell = document.querySelector(`[data-row="${match.row}"][data-col="${match.col}"]`);
+                    cell.classList.add('drop-in');
+                    gameBoard[match.row][match.col] = {
+                        shape: shapes[shapeIndex],
+                        color: colors[colorIndex]
+                    };
+                    setTimeout(() => {
+                        cell.classList.remove('drop-in');
+                    }, 500);
+                });
+                
+                document.getElementById('score').textContent = `Score: ${score}`;
+                
+                // Check for level up
+                if (score >= 500 && currentLevel === 1) {
+                    currentLevel++;
+                    showLevelUpMessage();
+                    setTimeout(() => {
+                        initializeBoard(true);
+                        setTimeout(() => {
+                            GRID_SIZE = 9;
+                            initializeBoard();
+                        }, 1000);
+                    }, 1000);
+                    return;
+                }
+                
+                updateBoard();
+                if (!frozenState) {
+                    setTimeout(checkMatches, 300);
+                }
+                
+                // Update powerup states
+                if (moveCounter > 0) {
+                    moveCounter--;
+                    if (moveCounter === 0) {
+                        frozenState = false;
+                        document.querySelectorAll('.cell').forEach(cell => {
+                            cell.style.filter = '';
+                        });
+                    }
+                }
+                if (goldRushMoves > 0) {
+                    goldRushMoves--;
+                    if (goldRushMoves === 0) {
+                        document.querySelectorAll('.cell').forEach(cell => {
+                            cell.style.filter = '';
+                        });
+                    }
+                }
+                
+                setTimeout(checkMatches, 300);
+            }
+        }
+
+        function replaceBlock(row, col) {
+            const shapeIndex = Math.floor(Math.random() * shapes.length);
+            const colorIndex = Math.floor(Math.random() * colors.length);
+            const cell = document.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+            cell.classList.add('drop-in');
+            gameBoard[row][col] = {
+                shape: shapes[shapeIndex],
+                color: colors[colorIndex]
+            };
+            setTimeout(() => {
+                cell.classList.remove('drop-in');
+            }, 500);
+        }
+
+        function showLevelUpMessage() {
+            const msg = document.createElement('div');
+            msg.className = 'level-up-message';
+            msg.textContent = 'Next Level Reached!';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 2000);
+        }
+
+        function getPowerupEmoji(name) {
+            const emojis = {
+                'Bomb': '💣',
+                'Line Clear': '⚡',
+                'Color Bomb': '🎨',
+                'Shape Bomb': '⭐',
+                'Points Boost': '💎',
+                'Rainbow': '🌈',
+                'Shuffle': '🔄',
+                'Wild Card': '🃏',
+                'Time Freeze': '❄️',
+                'Gold Rush': '💰',
+                'Chaos Swap': '🎲',
+                'Chain': '⛓️'
+            };
+            return emojis[name] || name;
+        }
+
+        function buyPowerup() {
+            if (score >= 100) {
+                score -= 100;
+                document.getElementById('score').textContent = `Score: ${score}`;
+                
+                const randomPowerup = POWERUP_TYPES[Math.floor(Math.random() * POWERUP_TYPES.length)];
+                powerups.push({...randomPowerup});
+                updatePowerupDock();
+                
+                // Update button state after purchase
+                document.getElementById('powerupButton').disabled = score < 100;
+            }
+        }
+
+        function updatePowerupDock() {
+            const dock = document.getElementById('powerupDock');
+            dock.innerHTML = '';
+            powerups.forEach((powerup, index) => {
+                const powerupElement = document.createElement('div');
+                powerupElement.className = 'powerup-item';
+                powerupElement.innerHTML = `
+                    <div class="powerup-tooltip">${powerup.description}</div>
+                    ${getPowerupEmoji(powerup.name)}
+                `;
+                powerupElement.addEventListener('click', () => activatePowerup(index));
+                dock.appendChild(powerupElement);
+            });
+        }
+
+        function activatePowerup(index) {
+            const powerup = powerups[index];
+            // List of powerups that activate immediately
+            const instantPowerups = ['Points Boost', 'Rainbow', 'Shuffle', 'Time Freeze', 'Gold Rush', 'Chaos Swap'];
+            
+            if (instantPowerups.includes(powerup.name)) {
+                if (powerup.action()) {
+                    removePowerup(powerup);
+                }
+            } else {
+                if (activePowerup) {
+                    activePowerup = null;
+                } else {
+                    activePowerup = powerup;
+                }
+            }
+        }
+
+        function removePowerup(powerup) {
+            const index = powerups.indexOf(powerup);
+            if (index > -1) {
+                powerups.splice(index, 1);
+                updatePowerupDock();
+            }
+        }
+
+        // Create background effects
+        function createBackgroundEffects() {
+            const container = document.createElement('div');
+            container.className = 'background-effect';
+            
+            // Create particles
+            for(let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                container.appendChild(particle);
+            }
+            
+            // Create waves
+            for(let i = 0; i < 3; i++) {
+                const wave = document.createElement('div');
+                wave.className = 'wave';
+                wave.style.top = 30 + (i * 30) + '%';
+                wave.style.animationDelay = i * 2 + 's';
+                container.appendChild(wave);
+            }
+            
+            document.body.appendChild(container);
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = (score / 500) * 100;
+            document.querySelector('.progress-bar').style.width = Math.min(100, progress) + '%';
+        }
+
+        document.getElementById('readyBtn').addEventListener('click', () => {
+            document.getElementById('startMenu').style.display = 'none';
+            document.getElementById('gameContainer').style.display = 'block';
+            createBackgroundEffects();
+            initializeBoard();
+        });
+
+        document.getElementById('powerupButton').addEventListener('click', buyPowerup);
+        document.getElementById('powerupInfoBtn').addEventListener('click', () => {
+            const modal = document.getElementById('powerupInfoModal');
+            const list = document.getElementById('powerupsList');
+            list.innerHTML = POWERUP_TYPES.map(powerup => `
+                <div style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 5px;">
+                    <strong>${getPowerupEmoji(powerup.name)} ${powerup.name}</strong>
+                    <div style="margin-top: 5px; opacity: 0.8;">${powerup.description}</div>
+                </div>
+            `).join('');
+            modal.style.display = 'block';
+        });
+
+        // Update button state when score changes
+        function findChainMatches(initialMatches) {
+            const chainMatches = [];
+            const directions = [[-1,-1], [-1,0], [-1,1], [0,-1], [0,1], [1,-1], [1,0], [1,1]];
+            
+            initialMatches.forEach(match => {
+                const {row, col} = match;
+                const currentPiece = gameBoard[row][col];
+                
+                directions.forEach(([dx, dy]) => {
+                    let newRow = row + dx;
+                    let newCol = col + dy;
+                    
+                    while (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+                        const checkPiece = gameBoard[newRow][newCol];
+                        if (checkPiece.color === currentPiece.color || checkPiece.shape === currentPiece.shape) {
+                            chainMatches.push({row: newRow, col: newCol});
+                        }
+                        newRow += dx;
+                        newCol += dy;
+                    }
+                });
+            });
+            
+            return chainMatches;
+        }
+
+        function updateScore(value) {
+            score = value;
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('powerupButton').disabled = score < 100;
+            updateProgressBar();
+        }
+
+        // Initialize score tracking
+        updateScore(0);
+    </script>
+<script>
+(function() {
+    var originalConsoleError = console.error;
+    console.error = function() {
+        window.parent.postMessage({
+            type: 'error',
+            message: Array.from(arguments).join(' ')
+        }, '*');
+        originalConsoleError.apply(console, arguments);
+    };
+
+    window.addEventListener('error', function(event) {
+        window.parent.postMessage({
+            type: 'error',
+            message: event.message,
+            source: event.filename,
+            lineno: event.lineno,
+            colno: event.colno,
+            error: event.error ? event.error.stack : null
+        }, '*');
+    });
+
+    window.addEventListener('unhandledrejection', function(event) {
+        window.parent.postMessage({
+            type: 'error',
+            message: 'Unhandled Promise Rejection: ' + event.reason,
+            error: event.reason ? event.reason.stack : null
+        }, '*');
+    });
+})();
+</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"8f855e1fbd1cb0c3","version":"2024.10.5","r":1,"token":"5562e2e56e7244b2af1869a8c731adb3","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}}}' crossorigin="anonymous"></script>
+</body>
+</html>
